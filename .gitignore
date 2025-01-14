@@ -167,5 +167,18 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# PyPI configuration file
-.pypirc
+# Experiments
+test.py
+test.ipynb
+
+# Mac
+.DS_Store
+
+# Data
+img
+data
+datasets
+results
+
+examples
+dna_origami
