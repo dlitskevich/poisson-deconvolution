@@ -157,3 +157,20 @@ def complex_normal_pdf(x, y, loc: complex, scale: int = 1) -> float:
     x_pdf = stats.norm.pdf(x, np.real(loc), scale)
     y_pdf = stats.norm.pdf(y, np.imag(loc), scale)
     return x_pdf * y_pdf
+
+
+def is_covariance_matrix(matrix: np.ndarray) -> bool:
+    # Check if the matrix is square
+    if matrix.shape[0] != matrix.shape[1]:
+        return False
+
+    # Check if the matrix is symmetric
+    if not np.allclose(matrix, matrix.T):
+        return False
+
+    # Check if the matrix is positive semi-definite
+    eigenvalues = np.linalg.eigvalsh(matrix)
+    if np.any(eigenvalues <= 0):
+        return False
+
+    return True

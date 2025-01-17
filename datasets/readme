@@ -1,1 +1,22 @@
-Store your data here
+## Store your data here
+
+1. create a folder with a desired name
+2. store your data, named `data` in the folder, supported file formats: .npy
+3. create a `config.json` file in the folder, with the following structure:
+
+```json
+{
+  "num_atoms": [4, 5],
+  "scale": 0.1,
+  "covariance": [
+    [1, 0],
+    [0, 1]
+  ], // optional, if not provided, the faster version for standard normal distribution will be used
+  "estimators": [
+    {
+      "type": "EM", // or "MOMENT"
+      "init": "moment"
+    }
+  ]
+}
+```

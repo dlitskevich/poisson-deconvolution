@@ -13,23 +13,17 @@ from optimal_deconvolution.microscopy import (
     MicroscopyExperiment,
     mode_from_std_data,
     from_moment_estimator,
-    circle_points,
     wasserstein_distance,
 )
 
 
 class EstimatorType(Enum):
-    Mode = "Mode Estimator"
-    Moment = "Moment Estimator"
-    MomentShifted = "Moment Estimator (shifted)"
+    Mode = "MODE"
+    Moment = "MOMENT"
     MLEMode = "MLE (mode)"
     MLEMoment = "MLE (moment)"
-    MLEMomentShifted = "MLE (moment shifted)"
-    MLECircle = "MLE (circle)"
     EMMode = "EM (mode)"
     EMMoment = "EM (moment)"
-    EMMomentShifted = "EM (moment shifted)"
-    EMCircle = "EM (circle)"
 
 
 BASE_ESTIMATORS = [
@@ -71,15 +65,10 @@ class MicroscopyEstimators:
         self.estimators = {
             EstimatorType.Mode: self.mode,
             EstimatorType.Moment: self.moment,
-            EstimatorType.MomentShifted: self.momentShifted,
             EstimatorType.MLEMode: self.MLEMode,
             EstimatorType.MLEMoment: self.MLEMoment,
-            EstimatorType.MLEMomentShifted: self.MLEMomentShifted,
-            EstimatorType.MLECircle: self.MLECircle,
             EstimatorType.EMMode: self.EMMode,
             EstimatorType.EMMoment: self.EMMoment,
-            EstimatorType.EMMomentShifted: self.EMMomentShifted,
-            EstimatorType.EMCircle: self.EMCircle,
         }
         if self.num_atoms == 0:
             self.estimators = defaultdict(lambda: lambda: np.array([]))
@@ -107,17 +96,6 @@ class MicroscopyEstimators:
         """
         estim = self.config.moment(self.experiment, self.num_atoms, self.scale)
         return estim.estimate(self.num_atoms, 0)
-
-    def momentShifted(self) -> np.ndarray:
-        """
-        Perform shifted moment estimation.
-
-        Returns:
-            np.ndarray: The estimated atoms locations.
-
-        """
-        estim = self.config.moment(self.experiment, self.num_atoms, self.scale)
-        return estim.estimate(self.num_atoms, -0.5 - 0.5j)
 
     def MLEMode(self) -> np.ndarray:
         """
@@ -147,32 +125,6 @@ class MicroscopyEstimators:
         )
         return mle.estimate(mu_0, self.scale)
 
-    def MLEMomentShifted(self) -> np.ndarray:
-        """
-        Perform shifted MLE estimation using moments.
-
-        Returns:
-            np.ndarray: The estimated atoms locations.
-
-        """
-        mle = self.config.mle(self.experiment)
-        mu_0 = from_moment_estimator(
-            self.experiment, self.num_atoms, self.scale, -0.5 - 0.5j, self.config.moment
-        )
-        return mle.estimate(mu_0, self.scale)
-
-    def MLECircle(self) -> np.ndarray:
-        """
-        Perform MLE estimation using circle points.
-
-        Returns:
-            np.ndarray: The estimated atoms locations.
-
-        """
-        mle = self.config.mle(self.experiment)
-        mu_0 = circle_points(self.num_atoms) / 8 + 0.5
-        return mle.estimate(mu_0, self.scale)
-
     def EMMode(self) -> np.ndarray:
         """
         Perform EM estimation using mode.
@@ -199,32 +151,6 @@ class MicroscopyEstimators:
         mu_0 = from_moment_estimator(
             self.experiment, self.num_atoms, self.scale, 0, self.config.moment
         )
-        return em.estimate(mu_0, self.scale)
-
-    def EMMomentShifted(self) -> np.ndarray:
-        """
-        Perform EM estimation using shifted moments method.
-
-        Returns:
-            np.ndarray: The estimated atoms locations.
-
-        """
-        em = self.config.em(self.experiment)
-        mu_0 = from_moment_estimator(
-            self.experiment, self.num_atoms, self.scale, -0.5 - 0.5j, self.config.moment
-        )
-        return em.estimate(mu_0, self.scale)
-
-    def EMCircle(self) -> np.ndarray:
-        """
-        Perform EM estimation using circle points.
-
-        Returns:
-            np.ndarray: The estimated atoms locations.
-
-        """
-        em = self.config.em(self.experiment)
-        mu_0 = circle_points(self.num_atoms) / 8 + 0.5
         return em.estimate(mu_0, self.scale)
 
     def estimate(
