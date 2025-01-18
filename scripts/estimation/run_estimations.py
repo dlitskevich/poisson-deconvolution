@@ -1,12 +1,12 @@
 from matplotlib import pyplot as plt
 import numpy as np
-from optimal_deconvolution.microscopy.config import Config
-from optimal_deconvolution.microscopy.estimators import (
+from poisson_deconvolution.microscopy.config import Config
+from poisson_deconvolution.microscopy.estimators import (
     EstimatorType,
     MicroscopyEstimators,
 )
-from optimal_deconvolution.microscopy.experiment import MicroscopyExperiment
-from optimal_deconvolution.voronoi.voronoi_split import DataSplit, VoronoiSplit
+from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
+from poisson_deconvolution.voronoi.voronoi_split import DataSplit, VoronoiSplit
 from .estimation_results import EstimationResults
 
 

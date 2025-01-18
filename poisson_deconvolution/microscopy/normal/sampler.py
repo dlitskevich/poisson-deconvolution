@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import stats
 
-from optimal_deconvolution.microscopy.sampler import MicroscopySampler
+from poisson_deconvolution.microscopy.sampler import MicroscopySampler
 
 
 class NormMicroscopySampler(MicroscopySampler):

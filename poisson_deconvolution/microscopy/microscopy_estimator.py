@@ -1,9 +1,9 @@
 import numpy as np
 from scipy import stats
 
-from optimal_deconvolution.microscopy.experiment import MicroscopyExperiment
-from optimal_deconvolution.microscopy.sampler import StdMicroscopySampler
-from optimal_deconvolution.wasserstein_distance import wasserstein_distance
+from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
+from poisson_deconvolution.microscopy.sampler import StdMicroscopySampler
+from poisson_deconvolution.wasserstein_distance import wasserstein_distance
 
 
 class MicroscopyEstimator:

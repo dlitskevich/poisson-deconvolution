@@ -1,6 +1,6 @@
-from optimal_deconvolution.microscopy.density.common import StdDensityMicroscopyCommon
-from optimal_deconvolution.microscopy.experiment import MicroscopyExperiment
-from optimal_deconvolution.microscopy.microscopy_em import StdMicroscopyEM
+from poisson_deconvolution.microscopy.density.common import StdDensityMicroscopyCommon
+from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
+from poisson_deconvolution.microscopy.microscopy_em import StdMicroscopyEM
 
 
 class StdDensityMicroscopyEM(StdMicroscopyEM, StdDensityMicroscopyCommon):

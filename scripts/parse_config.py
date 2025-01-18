@@ -1,8 +1,8 @@
 import json
 import numpy as np
-from optimal_deconvolution.microscopy.config import Config
-from optimal_deconvolution.microscopy.estimators import EstimatorType
-from optimal_deconvolution.normal_distribution import is_covariance_matrix
+from poisson_deconvolution.microscopy.config import Config
+from poisson_deconvolution.microscopy.estimators import EstimatorType
+from poisson_deconvolution.normal_distribution import is_covariance_matrix
 
 
 class EstimationConfig:

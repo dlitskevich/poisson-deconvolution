@@ -1,5 +1,5 @@
-from optimal_deconvolution.microscopy.density.common import StdDensityMicroscopyCommon
-from optimal_deconvolution.microscopy.microscopy_mle import StdMicroscopyMLE
+from poisson_deconvolution.microscopy.density.common import StdDensityMicroscopyCommon
+from poisson_deconvolution.microscopy.microscopy_mle import StdMicroscopyMLE
 
 
 class StdDensityMicroscopyMLE(StdMicroscopyMLE, StdDensityMicroscopyCommon):

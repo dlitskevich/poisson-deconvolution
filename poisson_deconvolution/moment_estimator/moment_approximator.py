@@ -2,7 +2,7 @@ from scipy.special import comb
 import scipy.stats as stats
 import numpy as np
 
-from optimal_deconvolution.normal_distribution import std_norm_moment_exact
+from poisson_deconvolution.normal_distribution import std_norm_moment_exact
 
 
 class MomentApproximator:

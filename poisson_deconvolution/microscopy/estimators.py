@@ -7,8 +7,8 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 
-from optimal_deconvolution.microscopy.config import Config
-from optimal_deconvolution.microscopy import (
+from poisson_deconvolution.microscopy.config import Config
+from poisson_deconvolution.microscopy import (
     MicroscopySampler,
     MicroscopyExperiment,
     mode_from_std_data,

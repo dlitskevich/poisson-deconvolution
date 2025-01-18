@@ -1,10 +1,10 @@
 import json
 from matplotlib import pyplot as plt
 import numpy as np
-from optimal_deconvolution.microscopy.estimators import (
+from poisson_deconvolution.microscopy.estimators import (
     EstimatorType,
 )
-from optimal_deconvolution.voronoi.voronoi_split import VoronoiSplit
+from poisson_deconvolution.voronoi.voronoi_split import VoronoiSplit
 
 
 class EstimationResults:

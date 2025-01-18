@@ -2,7 +2,7 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
-from optimal_deconvolution.microscopy.experiment import generate_bins_loc
+from poisson_deconvolution.microscopy.experiment import generate_bins_loc
 
 
 class DataSplit:

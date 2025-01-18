@@ -1,9 +1,9 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
-from optimal_deconvolution.wasserstein_distance import wasserstein_distance
-from optimal_deconvolution.microscopy import MicroscopyExperiment
-from optimal_deconvolution.moment_estimator import (
+from poisson_deconvolution.wasserstein_distance import wasserstein_distance
+from poisson_deconvolution.microscopy import MicroscopyExperiment
+from poisson_deconvolution.moment_estimator import (
     StdComplexNormMomentApproximator,
     MeasureMomentApproximator,
 )

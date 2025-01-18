@@ -1,8 +1,8 @@
 import numpy as np
 
-from optimal_deconvolution.microscopy.experiment import MicroscopyExperiment
-from optimal_deconvolution.microscopy.microscopy_mle import MicroscopyMLE
-from optimal_deconvolution.microscopy.normal.sampler import NormMicroscopySampler
+from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
+from poisson_deconvolution.microscopy.microscopy_mle import MicroscopyMLE
+from poisson_deconvolution.microscopy.normal.sampler import NormMicroscopySampler
 
 
 class NormMicroscopyMLE(MicroscopyMLE):

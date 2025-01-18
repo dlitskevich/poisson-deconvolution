@@ -4,12 +4,12 @@ from scipy import stats
 import scipy.optimize as optim
 from matplotlib import pyplot as plt
 
-from optimal_deconvolution.microscopy.experiment import MicroscopyExperiment
-from optimal_deconvolution.microscopy.microscopy_estimator import (
+from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
+from poisson_deconvolution.microscopy.microscopy_estimator import (
     MicroscopyEstimator,
     StdMicroscopyCommon,
 )
-from optimal_deconvolution.wasserstein_distance import wasserstein_distance
+from poisson_deconvolution.wasserstein_distance import wasserstein_distance
 
 
 class MicroscopyMLE(MicroscopyEstimator):

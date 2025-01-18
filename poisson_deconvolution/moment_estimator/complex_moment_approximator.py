@@ -1,7 +1,7 @@
 from scipy.special import comb
 import numpy as np
 
-from optimal_deconvolution.normal_distribution import (
+from poisson_deconvolution.normal_distribution import (
     complex_centered_normal_moment,
     complex_half_std_normal_moment,
 )

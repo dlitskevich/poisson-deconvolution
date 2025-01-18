@@ -1,10 +1,10 @@
-from optimal_deconvolution.microscopy.moment_estimator import (
+from poisson_deconvolution.microscopy.moment_estimator import (
     StdMicroscopyMomentEstimator,
 )
-from optimal_deconvolution.moment_estimator.complex_moment_approximator import (
+from poisson_deconvolution.moment_estimator.complex_moment_approximator import (
     HalfStdComplexNormMomentApproximator,
 )
-from optimal_deconvolution.microscopy import MicroscopyExperiment
+from poisson_deconvolution.microscopy import MicroscopyExperiment
 
 
 class HalfStdMicroscopyMomentEstimator(StdMicroscopyMomentEstimator):

@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import stats
 from scipy.integrate import dblquad
-from optimal_deconvolution.microscopy.experiment import (
+from poisson_deconvolution.microscopy.experiment import (
     MicroscopyExperiment,
     generate_bins_loc,
 )

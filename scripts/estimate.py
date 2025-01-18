@@ -6,8 +6,8 @@ import sys
 import numpy as np
 
 from estimation import run_split_estimations, SplitEstimationsResults, mode_from_data
-from optimal_deconvolution.microscopy.experiment import MicroscopyExperiment
-from optimal_deconvolution.voronoi import VoronoiSplit
+from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
+from poisson_deconvolution.voronoi import VoronoiSplit
 from read_dataset import read_dataset
 
 

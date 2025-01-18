@@ -1,32 +1,32 @@
 import numpy as np
-from optimal_deconvolution.microscopy.density.microscopy_em import (
+from poisson_deconvolution.microscopy.density.microscopy_em import (
     StdDensityMicroscopyEM,
 )
-from optimal_deconvolution.microscopy.density.microscopy_mle import (
+from poisson_deconvolution.microscopy.density.microscopy_mle import (
     StdDensityMicroscopyMLE,
 )
-from optimal_deconvolution.microscopy.half_std.microscopy_em import HalfStdMicroscopyEM
-from optimal_deconvolution.microscopy.half_std.microscopy_mle import (
+from poisson_deconvolution.microscopy.half_std.microscopy_em import HalfStdMicroscopyEM
+from poisson_deconvolution.microscopy.half_std.microscopy_mle import (
     HalfStdMicroscopyMLE,
 )
-from optimal_deconvolution.microscopy.half_std.moment_estimator import (
+from poisson_deconvolution.microscopy.half_std.moment_estimator import (
     HalfStdMicroscopyMomentEstimator,
 )
-from optimal_deconvolution.microscopy.microscopy_em import StdMicroscopyEM
-from optimal_deconvolution.microscopy.microscopy_mle import StdMicroscopyMLE
-from optimal_deconvolution.microscopy.normal.microscopy_em import NormMicroscopyEM
-from optimal_deconvolution.microscopy.normal.microscopy_mle import NormMicroscopyMLE
-from optimal_deconvolution.microscopy.normal.moment_estimator import (
+from poisson_deconvolution.microscopy.microscopy_em import StdMicroscopyEM
+from poisson_deconvolution.microscopy.microscopy_mle import StdMicroscopyMLE
+from poisson_deconvolution.microscopy.normal.microscopy_em import NormMicroscopyEM
+from poisson_deconvolution.microscopy.normal.microscopy_mle import NormMicroscopyMLE
+from poisson_deconvolution.microscopy.normal.moment_estimator import (
     NormMicroscopyMomentEstimator,
 )
-from optimal_deconvolution.microscopy.normal.sampler import NormMicroscopySampler
-from optimal_deconvolution.microscopy.sampler import (
+from poisson_deconvolution.microscopy.normal.sampler import NormMicroscopySampler
+from poisson_deconvolution.microscopy.sampler import (
     HalfStdMicroscopySampler,
     MicroscopySampler,
     StdMicroscopySampler,
 )
 
-from optimal_deconvolution.microscopy.moment_estimator import (
+from poisson_deconvolution.microscopy.moment_estimator import (
     StdMicroscopyMomentEstimator,
 )
 

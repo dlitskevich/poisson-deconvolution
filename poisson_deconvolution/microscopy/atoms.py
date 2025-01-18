@@ -2,7 +2,7 @@ from enum import Enum
 from matplotlib import pyplot as plt
 import numpy as np
 
-from optimal_deconvolution.microscopy.points_initializers import circle_points
+from poisson_deconvolution.microscopy.points_initializers import circle_points
 
 
 def _grid_gen(dx: int, dy: int, num: int) -> np.ndarray:

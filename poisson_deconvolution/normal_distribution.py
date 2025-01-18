@@ -2,7 +2,7 @@ from math import comb
 import numpy as np
 from scipy import stats
 
-from optimal_deconvolution.utils import count_partitions_binomial
+from poisson_deconvolution.utils import count_partitions_binomial
 
 
 def double_factorial(n: int) -> int:

@@ -1,5 +1,5 @@
 import numpy as np
-from optimal_deconvolution.microscopy.experiment import MicroscopyExperiment
+from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
 
 
 def mode_from_data(

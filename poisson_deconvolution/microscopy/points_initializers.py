@@ -1,10 +1,10 @@
 import numpy as np
 
-from optimal_deconvolution.microscopy import MicroscopyExperiment
-from optimal_deconvolution.microscopy.moment_estimator import (
+from poisson_deconvolution.microscopy import MicroscopyExperiment
+from poisson_deconvolution.microscopy.moment_estimator import (
     StdMicroscopyMomentEstimator,
 )
-from optimal_deconvolution.microscopy.sampler import MicroscopySampler
+from poisson_deconvolution.microscopy.sampler import MicroscopySampler
 
 
 def mode_from_std_data(

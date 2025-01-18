@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import stats
 
-from optimal_deconvolution.microscopy.microscopy_estimator import StdMicroscopyCommon
+from poisson_deconvolution.microscopy.microscopy_estimator import StdMicroscopyCommon
 
 
 class HalfStdDensityMicroscopyCommon(StdMicroscopyCommon):
