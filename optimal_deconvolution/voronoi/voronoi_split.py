@@ -63,6 +63,10 @@ class VoronoiSplit:
         split = np.array(raw["split"])
         return cls(nodes, delta, n_bins, components, split)
 
+    @classmethod
+    def empty(cls, nodes: np.ndarray, n_bins: tuple[int] | int):
+        return cls(nodes, None, n_bins, [0], 0)
+
     def __init__(
         self,
         nodes: np.ndarray,
@@ -101,8 +105,8 @@ class VoronoiSplit:
 
         return split_grid.reshape(self.n_bins)
 
-    def split_data(self, data: np.ndarray, id: int, threshold: float = 0) -> DataSplit:
-        masked, data_mask = self._masked_data(data, id, threshold)
+    def split_data(self, data: np.ndarray, id: int) -> DataSplit:
+        masked, data_mask = self._masked_data(data, id)
         pos = np.where(data_mask)
         min_pos = np.min(pos, axis=1)
         max_pos = np.max(pos, axis=1)
@@ -110,10 +114,8 @@ class VoronoiSplit:
 
         return DataSplit(split, min_pos, max_pos, id, self.n_bins)
 
-    def _masked_data(
-        self, data: np.ndarray, id: int, threshold: float = 0
-    ) -> np.ndarray:
-        data_mask = (self.split == id) & (data > threshold)
+    def _masked_data(self, data: np.ndarray, id: int) -> np.ndarray:
+        data_mask = self.split == id
         return np.ma.array(data, mask=~data_mask, fill_value=0).filled(), data_mask
 
     def to_json(self):

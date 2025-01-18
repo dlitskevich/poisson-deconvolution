@@ -1,3 +1,4 @@
+import json
 import numpy as np
 from optimal_deconvolution.microscopy.config import Config
 from optimal_deconvolution.microscopy.estimators import EstimatorType
@@ -5,6 +6,12 @@ from optimal_deconvolution.normal_distribution import is_covariance_matrix
 
 
 class EstimationConfig:
+    @staticmethod
+    def from_path(path: str):
+        with open(path, "r") as file:
+            spec = json.load(file)
+        return parse_config(spec)
+
     def __init__(
         self,
         estimators: list[EstimatorType],

@@ -182,3 +182,6 @@ results
 
 examples
 dna_origami
+
+# vscode
+.vscode/settings.json

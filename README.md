@@ -14,8 +14,8 @@ TODO
 To setup the corresponding `conda` environment run:
 
 ```
-conda create -n optimal-deconvolution python=3.12.3
-source activate optimal-deconvolution
+conda create -n poisson-deconvolution python=3.12.3
+source activate poisson-deconvolution
 ```
 
 Install dependencies via:

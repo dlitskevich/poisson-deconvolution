@@ -3,10 +3,14 @@ import numpy as np
 
 
 class MicroscopyExperiment:
+    @staticmethod
+    def from_data(data: np.ndarray):
+        return MicroscopyExperiment(data, float(data.sum()))
+
     def __init__(
         self,
         data: np.ndarray,
-        t: int = 10000,
+        t: float,
         atoms: np.ndarray = None,
         bins_loc: np.ndarray = None,
     ):
@@ -15,7 +19,7 @@ class MicroscopyExperiment:
 
         Parameters:
             data (np.ndarray): The experimental data.
-            t (int, optional): The illumination time. Defaults to 10000.
+            t (float): The illumination time.
             atoms (np.ndarray, optional): The true atoms in the experiment. Defaults to None.
             bins_loc (np.ndarray, optional): The locations of the bins. Defaults to None.
         """
