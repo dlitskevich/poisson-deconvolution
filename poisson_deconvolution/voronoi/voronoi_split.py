@@ -65,7 +65,7 @@ class VoronoiSplit:
 
     @classmethod
     def empty(cls, nodes: np.ndarray, n_bins: tuple[int] | int):
-        return cls(nodes, None, n_bins, [0], 0)
+        return cls(nodes, None, n_bins, np.array([[0]]), np.array([0]))
 
     def __init__(
         self,
@@ -115,7 +115,8 @@ class VoronoiSplit:
         return DataSplit(split, min_pos, max_pos, id, self.n_bins)
 
     def _masked_data(self, data: np.ndarray, id: int) -> np.ndarray:
-        data_mask = self.split == id
+        split = self.split if len(self.split) != 1 else np.zeros_like(data)
+        data_mask = split == id
         return np.ma.array(data, mask=~data_mask, fill_value=0).filled(), data_mask
 
     def to_json(self):

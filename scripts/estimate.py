@@ -1,21 +1,26 @@
 import json
 import logging
 import os
+import pathlib
 import sys
 
 import numpy as np
 
-from estimation import run_split_estimations, SplitEstimationsResults, mode_from_data
+from scripts.estimation import (
+    run_split_estimations,
+    SplitEstimationsResults,
+    mode_from_data,
+)
 from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
 from poisson_deconvolution.voronoi import VoronoiSplit
-from read_dataset import read_dataset
+from scripts.read_dataset import read_dataset
 
-
-DATASET_DIR = os.path.abspath("../datasets")
-OUTPUT_DIR = os.path.abspath("../results")
+ROOT = pathlib.Path(__file__).parent.parent
+DATASET_DIR = os.path.join(ROOT, "datasets")
+OUTPUT_DIR = os.path.join(ROOT, "results")
 
 if __name__ == "__main__":
-    dataset = int(sys.argv[1])
+    dataset = sys.argv[1]
     dataset_path = os.path.join(DATASET_DIR, dataset)
     out_path = os.path.join(OUTPUT_DIR, dataset)
     data, estim_config = read_dataset(dataset_path)
@@ -27,19 +32,21 @@ if __name__ == "__main__":
     config = estim_config.config
     exp = MicroscopyExperiment.from_data(data)
 
-    kernel = config.sampler(
-        np.ones((1, 2)) / 2, data.shape, scale, 1
-    ).sample_convolution()
+    kernel = (
+        config.sampler(np.ones((1, 2)) / 2, data.shape, scale, 1)
+        .sample_convolution()
+        .data
+    )
     init_guess, data_denoised = mode_from_data(exp, 10, kernel)
     logging.info(f"Successfully made init guess")
     t_denoised = data_denoised.sum()
 
     split = VoronoiSplit.empty(init_guess, data.shape)
 
-    results = SplitEstimationsResults({}, None)
+    results = SplitEstimationsResults({}, split)
 
     file_path = os.path.join(out_path, "estimations.json")
-    os.mkdir(out_path, exist_ok=True)
+    pathlib.Path(out_path).mkdir(parents=True, exist_ok=True)
     for num_atoms in estim_config.num_atoms:
         print(
             f"Starting data estimation... {scale} scale {num_atoms} number of components"
