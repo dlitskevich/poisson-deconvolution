@@ -4,6 +4,7 @@ import os
 import pathlib
 import sys
 
+from matplotlib import pyplot as plt
 import numpy as np
 
 from scripts.estimation import (
@@ -13,6 +14,7 @@ from scripts.estimation import (
 )
 from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
 from poisson_deconvolution.voronoi import VoronoiSplit
+from scripts.plot.plot import plot_estimated
 from scripts.read_dataset import read_dataset
 
 ROOT = pathlib.Path(__file__).parent.parent
@@ -23,6 +25,9 @@ if __name__ == "__main__":
     dataset = sys.argv[1]
     dataset_path = os.path.join(DATASET_DIR, dataset)
     out_path = os.path.join(OUTPUT_DIR, dataset)
+    img_out_path = os.path.join(out_path, "img")
+    pathlib.Path(img_out_path).mkdir(parents=True, exist_ok=True)
+
     data, estim_config = read_dataset(dataset_path)
     logging.info(f"Successfully read dataset from {dataset_path}")
 
@@ -37,9 +42,16 @@ if __name__ == "__main__":
         .sample_convolution()
         .data
     )
-    init_guess, data_denoised = mode_from_data(exp, 10, kernel)
+    # TODO: add num of init guess to config
+    init_guess, data_denoised = mode_from_data(exp, 4, kernel)
     logging.info(f"Successfully made init guess")
     t_denoised = data_denoised.sum()
+
+    exp_denoised = MicroscopyExperiment.from_data(data_denoised)
+    exp_denoised.plot_data("binary")
+    plt.savefig(
+        os.path.join(img_out_path, "denoised_data.pdf"), bbox_inches="tight", dpi=300
+    )
 
     split = VoronoiSplit.empty(init_guess, data.shape)
 
@@ -63,3 +75,7 @@ if __name__ == "__main__":
 
         with open(file_path, "w") as file:
             json.dump(results.to_json(), file)
+
+    plot_estimated(
+        exp, results, estim_config.num_atoms, estimators[0], savepath=img_out_path
+    )

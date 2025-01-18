@@ -19,7 +19,7 @@ def mode_from_data(
     data = experiment.data / experiment.data.sum()
     n_bins = max(experiment.data.shape)
     best_loc = -np.ones((num_atoms, 2))
-    diff = data
+    diff = data.copy()
 
     for i in range(num_atoms):
         max_id = np.argmax(diff)
@@ -41,4 +41,4 @@ def mode_from_data(
         )
     diff = np.ma.array(diff, mask=diff < 0).filled(0)
 
-    return best_loc, data - diff * experiment.t
+    return best_loc, (data - diff) * experiment.t
