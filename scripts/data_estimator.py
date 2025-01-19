@@ -69,14 +69,13 @@ class DataEstimator:
         deltas = self.deltas
 
         for delta in deltas:
+            logging.info(f"Starting data estimation... {scale} scale {delta} delta")
             split = VoronoiSplit(self.init_guess, delta, data.shape)
             results = SplitEstimationsResults({}, split)
 
             file_path = os.path.join(out_path, f"estimations_d{delta}.json")
             for num_atoms in num_atoms_list:
-                print(
-                    f"Starting data estimation... {scale} scale {num_atoms} number of components"
-                )
+                logging.info(f"{num_atoms} number of components")
                 estimation_res = run_split_estimations(
                     data, split, estimators, num_atoms, scale, t, config
                 )
