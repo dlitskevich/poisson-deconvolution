@@ -18,8 +18,8 @@ from poisson_deconvolution.microscopy import (
 
 
 class EstimatorType(Enum):
-    Mode = "MODE"
-    Moment = "MOMENT"
+    Mode = "Mode"
+    Moment = "Moment"
     MLEMode = "MLE (mode)"
     MLEMoment = "MLE (moment)"
     EMMode = "EM (mode)"

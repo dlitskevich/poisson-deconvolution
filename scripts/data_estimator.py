@@ -33,6 +33,8 @@ class DataEstimator:
 
         self.data, self.estim_config, self.kernel = read_dataset(dataset_path)
         logging.info(f"Successfully read dataset from {dataset_path}")
+        self.estim_config.dump(os.path.join(self.out_path, "config.json"))
+
         self.scale = self.estim_config.scale
         self.estimators = self.estim_config.estimators
         self.config = self.estim_config.config

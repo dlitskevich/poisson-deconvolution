@@ -1,2 +1,2 @@
 COLORS = ["b", "r"]
-PREFIX = ["", "denoised_"]
+PREFIX = ["", "_denoised"]

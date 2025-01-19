@@ -7,19 +7,14 @@ from scripts.estimation.estimation_results import SplitEstimationsResults
 from scripts.plot.types import COLORS, PREFIX
 
 
-def plot_all_data(self, exps: list[MicroscopyExperiment], savepath: str):
-    path = self.img_out_path
+def plot_all_data(exps: list[MicroscopyExperiment], savepath: str):
     for l, exp in enumerate(exps):
         exp.plot_data("binary")
         plt.xticks([])
         plt.yticks([])
-        name = "data_" + PREFIX[l]
+        name = "data" + PREFIX[l]
         path = os.path.join(savepath, name + ".pdf")
-        plt.savefig(
-            os.path.join(path, "data_denoised.pdf"),
-            bbox_inches="tight",
-            dpi=300,
-        )
+        plt.savefig(path, bbox_inches="tight", dpi=300)
 
 
 def plot_estimated(
@@ -43,7 +38,7 @@ def plot_estimated(
                 plt.yticks([])
 
             if savepath is not None:
-                name = "estims_" + PREFIX[l] + f"{estimator.name}_"
+                name = "estims" + PREFIX[l] + "_" + f"{estimator.name}_"
                 name += "_".join([str(n) for n in num_atoms_list])
                 path = os.path.join(savepath, name + ".pdf")
                 plt.savefig(path, bbox_inches="tight", dpi=300)

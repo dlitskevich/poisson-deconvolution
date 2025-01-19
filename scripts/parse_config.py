@@ -24,15 +24,25 @@ class EstimationConfig:
         self.scale = scale
         self.config = config
 
+    def to_json(self) -> dict:
+        res = {
+            "estimators": [estim.name for estim in self.estimators],
+            "num_atoms": self.num_atoms,
+            "scale": self.scale,
+        }
+        if self.config.inner_scale != 1:
+            res["covariance"] = self.config.inner_scale.tolist()
 
-def parse_estimator_type(spec: dict) -> EstimatorType:
+        return res
+
+    def dump(self, path: str):
+        with open(path, "w") as file:
+            json.dump(self.to_json(), file)
+
+
+def parse_estimator_type(spec: str) -> EstimatorType:
     try:
-        spec_type = spec["type"].upper()
-        if spec_type in [EstimatorType.Moment.value]:
-            return EstimatorType(spec_type)
-
-        value = f"{spec_type} ({spec["init"].lower()})"
-        type = EstimatorType(value)
+        type = EstimatorType(spec)
     except (KeyError, ValueError):
         raise ValueError(f"Invalid estimator type specification: {spec}")
 
