@@ -62,11 +62,11 @@ class SplitEstimationsResults:
         self,
         estimations: dict[int, list[EstimationResults]],
         split: VoronoiSplit,
-        denoised: dict[int, list[EstimationResults]] = {},
+        denoised: dict[int, list[EstimationResults]] = None,
     ):
         self.estimations = estimations
         self.split = split
-        self.denoised = denoised
+        self.denoised = denoised if denoised is not None else {}
 
     def add_result(self, num_atoms: int, estimations: list[EstimationResults]):
         if num_atoms not in self.estimations:
