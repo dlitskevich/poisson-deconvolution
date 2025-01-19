@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from poisson_deconvolution.microscopy.estimators import EstimatorType
 from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
 from scripts.estimation.estimation_results import SplitEstimationsResults
-from scripts.plot.types import COLORS, PREFIX
+from scripts.plotting.types import COLORS, PREFIX
 
 
 def plot_all_data(exps: list[MicroscopyExperiment], savepath: str):

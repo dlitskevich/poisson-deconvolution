@@ -51,11 +51,12 @@ def read_config_file(dir: str) -> EstimationConfig:
         raise ValueError(f"Config file not found: {name}")
 
 
-def read_dataset(dir_path: str):
+def read_dataset(dir_path: str, no_config=False):
 
     data = read_data_file(dir_path)
     data = data[::-1, :].T  # for correct orientation
-    config = read_config_file(dir_path)
+
+    config = read_config_file(dir_path) if not no_config else None
     kernel = read_kernel(dir_path)
 
     if kernel is not None and kernel.shape != data.shape:
