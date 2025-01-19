@@ -24,6 +24,7 @@ def plot_estimated(
     estimators: list[EstimatorType],
     savepath: str = None,
 ):
+    delta = split_res.split.delta
     n_col = len(num_atoms_list)
     estimations = [split_res.estimations, split_res.denoised]
     for estimator in estimators:
@@ -38,7 +39,7 @@ def plot_estimated(
                 plt.yticks([])
 
             if savepath is not None:
-                name = "estims" + PREFIX[l] + "_" + f"{estimator.name}_"
+                name = f"estims{PREFIX[l]}_d{delta}_{estimator.name}_"
                 name += "_".join([str(n) for n in num_atoms_list])
                 path = os.path.join(savepath, name + ".pdf")
                 plt.savefig(path, bbox_inches="tight", dpi=300)

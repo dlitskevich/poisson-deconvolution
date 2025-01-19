@@ -74,11 +74,11 @@ class DataEstimator:
         t_denoised = self.exp_denoised.t
         deltas = self.deltas
 
-        split = VoronoiSplit.empty(data.shape)
-
-        results = SplitEstimationsResults({}, split)
         for delta in deltas:
-            file_path = os.path.join(out_path, "estimations_d{delta}.json")
+            split = VoronoiSplit(self.init_guess, delta, data.shape)
+            results = SplitEstimationsResults({}, split)
+
+            file_path = os.path.join(out_path, f"estimations_d{delta}.json")
             for num_atoms in num_atoms_list:
                 print(
                     f"Starting data estimation... {scale} scale {num_atoms} number of components"
