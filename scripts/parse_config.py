@@ -18,17 +18,23 @@ class EstimationConfig:
         num_atoms: list[int],
         scale: float,
         config: Config,
+        deltas: list[float],
+        init_guess: int,
     ):
         self.estimators = estimators
         self.num_atoms = num_atoms
         self.scale = scale
         self.config = config
+        self.deltas = deltas
+        self.init_guess = init_guess
 
     def to_json(self) -> dict:
         res = {
             "estimators": [estim.name for estim in self.estimators],
             "num_atoms": self.num_atoms,
             "scale": self.scale,
+            "init_guess": self.init_guess,
+            "deltas": self.deltas,
         }
         if self.config.inner_scale != 1:
             res["covariance"] = self.config.inner_scale.tolist()
@@ -80,6 +86,14 @@ def parse_config(spec: dict) -> dict:
         scale = spec["scale"]
     except KeyError:
         raise ValueError("Missing required key in config: 'scale'")
+    try:
+        init_guess = spec["init_guess"]
+    except KeyError:
+        raise ValueError("Missing required key in config: 'init_guess'")
+    try:
+        deltas = spec["deltas"]
+    except KeyError:
+        raise ValueError("Missing required key in config: 'deltas'")
 
     try:
         covariance = parse_covariance(spec["covariance"])
@@ -88,4 +102,4 @@ def parse_config(spec: dict) -> dict:
 
     config = Config.std() if covariance is None else Config.normal(covariance)
 
-    return EstimationConfig(estimators, num_atoms, scale, config)
+    return EstimationConfig(estimators, num_atoms, scale, config, deltas, init_guess)

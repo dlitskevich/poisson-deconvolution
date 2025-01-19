@@ -39,6 +39,7 @@ class DataEstimator:
         self.estimators = self.estim_config.estimators
         self.config = self.estim_config.config
         self.exp = MicroscopyExperiment.from_data(self.data)
+        self.deltas = self.estim_config.deltas
 
         if self.kernel is None:
             logging.info(
@@ -51,7 +52,7 @@ class DataEstimator:
                 .sample_convolution()
                 .data
             )
-        init_guess_num = 4
+        init_guess_num = self.estim_config.init_guess
         self.init_guess, data_denoised = mode_from_data(
             self.exp, init_guess_num, self.kernel
         )
@@ -71,29 +72,36 @@ class DataEstimator:
         t = self.exp.t
         data_denoised = self.exp_denoised.data
         t_denoised = self.exp_denoised.t
+        deltas = self.deltas
 
         split = VoronoiSplit.empty(data.shape)
 
         results = SplitEstimationsResults({}, split)
+        for delta in deltas:
+            file_path = os.path.join(out_path, "estimations_d{delta}.json")
+            for num_atoms in num_atoms_list:
+                print(
+                    f"Starting data estimation... {scale} scale {num_atoms} number of components"
+                )
+                estimation_res = run_split_estimations(
+                    data, split, estimators, num_atoms, scale, t, config
+                )
+                denoised_estimation_res = run_split_estimations(
+                    data_denoised,
+                    split,
+                    estimators,
+                    num_atoms,
+                    scale,
+                    t_denoised,
+                    config,
+                )
 
-        file_path = os.path.join(out_path, "estimations.json")
-        for num_atoms in num_atoms_list:
-            print(
-                f"Starting data estimation... {scale} scale {num_atoms} number of components"
-            )
-            estimation_res = run_split_estimations(
-                data, split, estimators, num_atoms, scale, t, config
-            )
-            denoised_estimation_res = run_split_estimations(
-                data_denoised, split, estimators, num_atoms, scale, t_denoised, config
-            )
+                results.add_result(num_atoms, estimation_res)
+                results.add_denoised_result(num_atoms, denoised_estimation_res)
 
-            results.add_result(num_atoms, estimation_res)
-            results.add_denoised_result(num_atoms, denoised_estimation_res)
-
-            with open(file_path, "w") as file:
-                json.dump(results.to_json(), file)
-        self.plot_estimated_data(results)
+                with open(file_path, "w") as file:
+                    json.dump(results.to_json(), file)
+            self.plot_estimated_data(results)
 
     def plot_all_data(self):
         savepath = self.img_out_path
