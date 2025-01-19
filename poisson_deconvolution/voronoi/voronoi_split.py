@@ -64,8 +64,8 @@ class VoronoiSplit:
         return cls(nodes, delta, n_bins, components, split)
 
     @classmethod
-    def empty(cls, nodes: np.ndarray, n_bins: tuple[int] | int):
-        return cls(nodes, None, n_bins, np.array([[0]]), np.array([0]))
+    def empty(cls, n_bins: tuple[int] | int):
+        return cls(np.array([]), None, n_bins, np.array([[0]]), np.array([0]))
 
     def __init__(
         self,

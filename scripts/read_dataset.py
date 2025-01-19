@@ -18,13 +18,27 @@ def read_data_file(dir: str) -> np.ndarray:
     exts = [ext for ext in DATA_EXTS if f"data{ext}" in filenames]
     if len(exts) == 0:
         raise ValueError(
-            f"Data file not found in {filenames}\nSupported extensions: {DATA_EXTS}"
+            f"Data file 'data.' not found in {filenames}\nSupported extensions: {DATA_EXTS}"
         )
     ext = exts[0]
 
     match ext:
         case ".npy":
             return np.load(os.path.join(dir, f"data{ext}"))
+        case _:
+            raise ValueError(f"Unsupported extension: {ext}")
+
+
+def read_kernel(dir: str) -> np.ndarray:
+    filenames = get_filenames(dir)
+    exts = [ext for ext in DATA_EXTS if f"kernel{ext}" in filenames]
+    if len(exts) == 0:
+        return None
+    ext = exts[0]
+
+    match ext:
+        case ".npy":
+            return np.load(os.path.join(dir, f"kernel{ext}"))
         case _:
             raise ValueError(f"Unsupported extension: {ext}")
 
@@ -42,5 +56,11 @@ def read_dataset(dir_path: str):
     data = read_data_file(dir_path)
     data = data[::-1, :].T  # for correct orientation
     config = read_config_file(dir_path)
+    kernel = read_kernel(dir_path)
 
-    return data, config
+    if kernel is not None and kernel.shape != data.shape:
+        raise ValueError(
+            f"Kernel shape {kernel.shape} does not match data shape {data.shape}"
+        )
+
+    return data, config, kernel
