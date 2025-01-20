@@ -177,8 +177,10 @@ test.ipynb
 # Data
 img
 data
-datasets
-results
+/datasets/** 
+/results/**
+!./datasets/readme.md
+!./results/readme.md
 
 examples
 dna_origami

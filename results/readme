@@ -1,1 +1,21 @@
-Here the results are stored
+## Here the results are stored
+
+For the corresponding `dataset` a folder is created with the same name. The folder contains the estimations, the `config.json` file used for the estimation and `plot-config.json` file used for plotting the results (only specified parameters are plotted).
+
+```json
+{
+  "x_lim": [0.17, 0.37],
+  "y_lim": [0.61, 0.81],
+  "best_delta": 0.025,
+  "deltas": [0.025, 0.05, 0.075, 0.1],
+  "num_atoms": [40, 50, 60, 70, 80]
+}
+```
+
+`x_lim` and `y_lim` are the limits of the zoom-in region.
+
+`best_delta` one of `deltas`.
+
+`num_atoms` is the number of mixture components.
+
+`deltas` used to Voronoi diagram, the smaller the value, the smaller the cell size.
