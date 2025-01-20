@@ -38,6 +38,19 @@ class PlotConfig:
         self.deltas = deltas
         self.num_atoms = num_atoms
 
+    def to_json(self):
+        return {
+            "x_lim": self.x_lim,
+            "y_lim": self.y_lim,
+            "best_delta": self.best_delta,
+            "deltas": self.deltas,
+            "num_atoms": self.num_atoms,
+        }
+
+    def dump(self, dir: str):
+        with open(os.path.join(dir, "plot_config.json"), "w") as f:
+            json.dump(self.to_json(), f)
+
 
 class PlotResults:
     def __init__(self, dataset: str):

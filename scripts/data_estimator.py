@@ -12,6 +12,7 @@ from scripts.estimation import (
 )
 from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
 from poisson_deconvolution.voronoi import VoronoiSplit
+from scripts.plot_results import PlotConfig
 from scripts.plotting.plot import plot_all_data, plot_estimated
 from scripts.read_dataset import read_dataset
 from scripts.path_constants import DATASET_DIR, OUTPUT_DIR
@@ -34,6 +35,13 @@ class DataEstimator:
         self.config = self.estim_config.config
         self.exp = MicroscopyExperiment.from_data(self.data)
         self.deltas = self.estim_config.deltas
+        PlotConfig(
+            [0.4, 0.6],
+            [0.4, 0.6],
+            self.deltas[0],
+            self.deltas,
+            self.estim_config.num_atoms,
+        ).dump(self.out_path)
 
         if self.kernel is None:
             logging.info(
