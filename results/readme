@@ -7,8 +7,17 @@ For the corresponding `dataset` a folder is created with the same name. The fold
   "x_lim": [0.17, 0.37],
   "y_lim": [0.61, 0.81],
   "best_delta": 0.025,
+  "estimators": ["Moment", "EM (moment)"],
   "deltas": [0.025, 0.05, 0.075, 0.1],
-  "num_atoms": [40, 50, 60, 70, 80]
+  "num_atoms": [40, 50, 60, 70, 80],
+  "split_estim_config": {
+    "num_atoms": 70,
+    "estimator": "EM (moment)"
+  },
+  "zoom_estim_config": {
+    "num_atoms": [40, 50, 60, 70, 80],
+    "estimators": ["Moment", "EM (moment)"]
+  }
 }
 ```
 

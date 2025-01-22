@@ -8,3 +8,6 @@ if __name__ == "__main__":
     data_estimator = PlotResults(dataset)
     data_estimator.plot_data()
     data_estimator.plot_best_estimations()
+    data_estimator.plot_splits()
+    data_estimator.plot_split_estimations()
+    data_estimator.plot_estimated_zoomed()
