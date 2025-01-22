@@ -21,9 +21,6 @@ class ErrorType(Enum):
 class StatsData:
     def from_json(data):
         data["stats"] = {EstimatorType(k): v for k, v in data["stats"].items()}
-        data["conv_errors"] = {
-            EstimatorType(k): v for k, v in data["conv_errors"].items()
-        }
         data["atoms_data"] = AtomsData.from_json(data["atoms_data"])
 
         return StatsData(**data)
@@ -37,8 +34,8 @@ class StatsData:
         scale=0.1,
         n_bins=10,
         time_elapsed=None,
-        conv_errors: Dict[EstimatorType, List] = {},
         real_scale=None,
+        **kwargs,
     ):
         self.stats = stats
         self.t_values = t_values
@@ -47,7 +44,6 @@ class StatsData:
         self.scale = scale
         self.n_bins = n_bins
         self.time_elapsed = time_elapsed
-        self.conv_errors = conv_errors
         self.real_scale = real_scale if real_scale is not None else scale
 
         self.filename = get_filename(
@@ -63,7 +59,6 @@ class StatsData:
             "t_values": self.t_values,
             "time_elapsed": self.time_elapsed,
             "stats": {k.value: v for k, v in self.stats.items()},
-            "conv_errors": {k.value: v for k, v in self.conv_errors.items()},
             "real_scale": self.real_scale,
         }
 

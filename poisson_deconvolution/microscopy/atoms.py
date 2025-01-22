@@ -30,7 +30,6 @@ class AtomsType(Enum):
     UShape = "u-shape"
     Corners = "corners"
     Clusters = "clusters"
-    Clusters6 = "clusters (6 points)"
 
 
 BASE_ATOMS = [
@@ -114,7 +113,7 @@ class AtomsData:
         return AtomsData(atoms, f"u-shape ({num} points)", AtomsType.UShape, num)
 
     @staticmethod
-    def clusters6(cluster_points: int, rad=0.05) -> "AtomsData":
+    def clusters(cluster_points: int, rad=0.05) -> "AtomsData":
         """
         Generate a 2 clusters pattern of 6 atoms.
 
@@ -135,7 +134,7 @@ class AtomsData:
         return AtomsData(
             atoms,
             f"clusters ({num-cluster_points}:{cluster_points} points) radius:{rad}",
-            AtomsType.Clusters6,
+            AtomsType.Clusters,
             cluster_points,
         )
 
@@ -246,5 +245,5 @@ _atoms_data_from_type = {
     AtomsType.Line2: AtomsData.lines2,
     AtomsType.Corners: AtomsData.corners,
     AtomsType.UShape: AtomsData.uShape,
-    AtomsType.Clusters6: lambda n: AtomsData.clusters6(n, 0.05),
+    AtomsType.Clusters: lambda n: AtomsData.clusters(n, 0.05),
 }

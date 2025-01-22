@@ -7,7 +7,7 @@ from typing import List
 import numpy as np
 
 from poisson_deconvolution.microscopy.config import Config
-from scripts.dataset.path_constants import OUTPUT_DIR
+from scripts.dataset.path_constants import SIMULATIONS_DIR
 
 from .error_data import StatsData
 from poisson_deconvolution.microscopy import (
@@ -19,23 +19,6 @@ from poisson_deconvolution.microscopy import (
     MicroscopyEstimators,
 )
 from poisson_deconvolution.microscopy.atoms import AtomsData
-
-
-def run_experiments_convolution(
-    config: Config,
-    atoms_data: AtomsData,
-    estimators: List[EstimatorType],
-    scale: float,
-    n_bins: int,
-):
-    atoms = atoms_data.atoms
-    sampler = config.sampler(atoms, n_bins, scale, 1)
-
-    exp = sampler.sample_convolution()
-    estim = MicroscopyEstimators(exp, scale, config)
-    errors = estim.error(estimators)
-
-    return errors
 
 
 def run_experiments(
@@ -59,8 +42,7 @@ def run_experiments(
             errors[estimator].append(error_time[0])
             times[estimator] += error_time[1]
 
-    stat_errors = {}
-    # print(f"Time elapsed: {sum(times.values())} {times}")
+    stat_errors: dict[EstimatorType, dict] = {}
 
     for estimator, error in errors.items():
         if len(error) > 0:
@@ -80,7 +62,7 @@ def run_experiments_along_t(
     num_experiments: int,
     scale: float,
     n_bins: int,
-    t_values=np.logspace(4, 8, 20),
+    t_values=np.ndarray,
     real_scale=None,
 ):
     if real_scale is None:
@@ -113,13 +95,13 @@ def generate_error_data(
     num_exp: int,
     scale: float,
     n_bins: int,
-    estimators=BASE_ESTIMATORS,
-    num_points=4,
-    t_values=np.logspace(4, 8, 20),
-    atoms_types=BASE_ATOMS,
-    save_path="std",
+    estimators: list[EstimatorType],
+    num_points: int,
+    t_values: np.ndarray,
+    atoms_types: List[AtomsType],
+    sim_name: str,
 ):
-    abs_path = os.path.join(OUTPUT_DIR, "simulations", save_path, "data")
+    abs_path = os.path.join(SIMULATIONS_DIR, sim_name, "data")
     pathlib.Path(abs_path).mkdir(parents=True, exist_ok=True)
 
     real_scale = (
@@ -136,10 +118,7 @@ def generate_error_data(
         res = run_experiments_along_t(
             config, atoms_data, estimators, num_exp, scale, n_bins, t_values, real_scale
         )
-        conv_errors = run_experiments_convolution(
-            config, atoms_data, estimators, real_scale, n_bins
-        )
-        res.conv_errors = conv_errors
+
         time_elapsed = time.time() - time_start
         res.time_elapsed = time_elapsed
 

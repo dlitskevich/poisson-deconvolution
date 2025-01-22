@@ -62,7 +62,19 @@ The estimations with plots will be saved in the `results` folder. See `results/r
 
 ## Experiments
 
-TODO: Add experiment details.
+The experiments can be run via the `scripts/simulate.py` script:
+
+```sh
+python -m scripts.simulate `simulation_name` `setting_id`
+```
+
+For more details, see `simulations/readme`.
+
+After the simulations are done, the results can be plotted via the `scripts/plot.py` script:
+
+```sh
+python -m scripts.plot_simulations `simulation_name`
+```
 
 ## Citation
 

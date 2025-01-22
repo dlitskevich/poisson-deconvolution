@@ -1,24 +1,29 @@
+import os
 import sys
-import numpy as np
+
+from scripts.dataset.path_constants import SIMULATIONS_DIR
 from scripts.simulation.generate_error_data import generate_error_data
 from poisson_deconvolution.microscopy.atoms import AtomsData, AtomsType
 from poisson_deconvolution.microscopy.config import Config
 from poisson_deconvolution.microscopy.estimators import EstimatorType
+from scripts.simulation.simulation_config import SimulationConfig
 
 config = Config.std()
-num_exp = 20
-n_bins_list = [10, 20, 40, 80]
-t_values = np.logspace(0, 8, 39)[::2]
-scales = [0.01, 0.05, 0.1]
-atoms_data_list = [
-    AtomsData.from_type(AtomsType.Corners, 2),
-    AtomsData.from_type(AtomsType.Clusters6, 2),
-    AtomsData.from_type(AtomsType.Grid, 4),
-]
+
 
 if __name__ == "__main__":
-    idx = int(sys.argv[1])
+    sim_name = sys.argv[1]
+    idx = int(sys.argv[2])
     print(f"Running idx={idx}")
+    config_path = os.path.join(SIMULATIONS_DIR, sim_name)
+    sim_config = SimulationConfig.from_dir(config_path)
+    print(f"Loaded config from {config_path}")
+
+    num_exp = sim_config.num_experiments
+    n_bins_list = sim_config.n_bins
+    t_values = sim_config.t_values
+    scales = sim_config.scales
+    atoms_data_list = sim_config.atoms_data
 
     scale = scales[idx % len(scales)]
     n_bins = n_bins_list[idx // len(scales)]
@@ -35,12 +40,12 @@ if __name__ == "__main__":
             num_exp,
             scale,
             n_bins,
-            num_points=num_points,
-            t_values=t_values,
-            atoms_types=[atoms_type],
             estimators=[
                 EstimatorType.Moment,
                 EstimatorType.EMMoment,
             ],
-            save_path="std",
+            num_points=num_points,
+            t_values=t_values,
+            atoms_types=[atoms_type],
+            sim_name=sim_name,
         )

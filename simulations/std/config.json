@@ -1,0 +1,34 @@
+{
+    "num_experiments": 20,
+    "n_bins": [
+        10,
+        20,
+        40,
+        80
+    ],
+    "t_values": {
+        "start": 0,
+        "stop": 8,
+        "num": 39,
+        "step": 2
+    },
+    "scales": [
+        0.01,
+        0.05,
+        0.1
+    ],
+    "atoms_data": [
+        {
+            "type": "grid",
+            "num_points": 4
+        },
+        {
+            "type": "corners",
+            "num_points": 2
+        },
+        {
+            "type": "u-shape",
+            "num_points": 4
+        }
+    ]
+}
