@@ -3,6 +3,7 @@ import logging
 import os
 import pathlib
 
+from matplotlib import pyplot as plt
 import numpy as np
 
 from scripts.estimation import (
@@ -107,6 +108,7 @@ class DataEstimator:
     def plot_all_data(self):
         savepath = self.img_out_path
         plot_all_data([self.exp, self.exp_denoised], savepath)
+        plt.close()
 
     def plot_estimated_data(self, results: SplitEstimationsResults):
         savepath = self.img_out_path
@@ -117,3 +119,4 @@ class DataEstimator:
             self.estimators,
             savepath=savepath,
         )
+        plt.close()
