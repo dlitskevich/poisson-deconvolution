@@ -1,6 +1,6 @@
 import sys
 
-from scripts.data_estimator import DataEstimator
+from scripts.estimation.data_estimator import DataEstimator
 
 
 if __name__ == "__main__":

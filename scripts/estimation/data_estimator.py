@@ -12,10 +12,10 @@ from scripts.estimation import (
 )
 from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
 from poisson_deconvolution.voronoi import VoronoiSplit
-from scripts.plot_results import PlotConfig
+from scripts.plotting.plot_results import PlotConfig
 from scripts.plotting.plot import plot_all_data, plot_estimated
-from scripts.read_dataset import read_dataset
-from scripts.path_constants import DATASET_DIR, OUTPUT_DIR
+from scripts.dataset.read_dataset import read_dataset
+from scripts.dataset.path_constants import DATASET_DIR, OUTPUT_DIR
 
 
 class DataEstimator:

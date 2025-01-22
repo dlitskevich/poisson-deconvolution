@@ -1,6 +1,6 @@
 import sys
 
-from scripts.plot_results import PlotResults
+from scripts.plotting.plot_results import PlotResults
 
 
 if __name__ == "__main__":

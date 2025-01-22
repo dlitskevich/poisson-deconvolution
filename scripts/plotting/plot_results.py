@@ -9,8 +9,8 @@ from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
 from scripts.estimation.estimation_results import SplitEstimationsResults
 from scripts.plotting.types import COLORS, PREFIX
 from scripts.plotting.utils import plot_box
-from scripts.read_dataset import read_dataset
-from scripts.path_constants import DATASET_DIR, OUTPUT_DIR
+from scripts.dataset.read_dataset import read_dataset
+from scripts.dataset.path_constants import DATASET_DIR, OUTPUT_DIR
 
 
 class PlotConfig:

@@ -2,7 +2,7 @@ import os
 
 import numpy as np
 
-from scripts.parse_config import EstimationConfig
+from scripts.dataset.parse_config import EstimationConfig
 
 DATA_EXTS = [".npy"]
 
