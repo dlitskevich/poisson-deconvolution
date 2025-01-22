@@ -125,7 +125,7 @@ def generate_error_data(
         errors.append(res)
         print(f"Finished {len(errors)}, elapsed time: {time_elapsed:.0f}s")
 
-        new_file_path = abs_path + res.filename + ".json"
+        new_file_path = os.path.join(abs_path, res.filename + ".json")
         with open(new_file_path, "w") as file:
             json.dump(res.to_json(), file)
 
