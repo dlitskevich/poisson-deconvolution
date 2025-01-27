@@ -179,8 +179,8 @@ img
 data
 /datasets/** 
 /results/**
-!./datasets/readme.md
-!./results/readme.md
+!datasets/readme.md
+!results/readme.md
 
 examples
 dna_origami
