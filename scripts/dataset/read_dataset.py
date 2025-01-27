@@ -1,4 +1,5 @@
 import os
+import pathlib
 
 import numpy as np
 
@@ -58,6 +59,7 @@ def read_dataset(dir_path: str, no_config=False):
 
     config = read_config_file(dir_path) if not no_config else None
     kernel = read_kernel(dir_path)
+    kernel = None if kernel is None else kernel[::-1, :].T  # for correct orientation
 
     if kernel is not None and kernel.shape != data.shape:
         raise ValueError(
@@ -65,3 +67,12 @@ def read_dataset(dir_path: str, no_config=False):
         )
 
     return data, config, kernel
+
+
+def save_dataset(
+    data: np.ndarray, config: EstimationConfig, kernel: np.ndarray, path: str
+):
+    pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+    np.save(os.path.join(path, "data.npy"), data.T[::-1, :])
+    config.dump(os.path.join(path, "config.json"))
+    np.save(os.path.join(path, "kernel.npy"), kernel.T[::-1, :])

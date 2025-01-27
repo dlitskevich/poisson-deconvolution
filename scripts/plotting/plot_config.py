@@ -18,7 +18,7 @@ class PlotSplitEstimConfig:
 
     def to_json(self):
         return {
-            "estimator": self.estimator.name,
+            "estimator": self.estimator.value,
             "num_atoms": self.num_atoms,
         }
 
@@ -38,7 +38,7 @@ class PlotZoomEstimConfig:
 
     def to_json(self):
         return {
-            "estimators": [est.name for est in self.estimators],
+            "estimators": [est.value for est in self.estimators],
             "num_atoms": self.num_atoms,
         }
 
@@ -85,7 +85,7 @@ class PlotConfig:
             else split_estim_config
         )
         self.zoom_estim_config = (
-            PlotZoomEstimConfig([], num_atoms)
+            PlotZoomEstimConfig(estimators[:2], num_atoms)
             if zoom_estim_config is None
             else zoom_estim_config
         )
@@ -94,7 +94,7 @@ class PlotConfig:
         return {
             "x_lim": self.x_lim,
             "y_lim": self.y_lim,
-            "estimators": [est.name for est in self.estimators],
+            "estimators": [est.value for est in self.estimators],
             "best_delta": self.best_delta,
             "deltas": self.deltas,
             "num_atoms": self.num_atoms,

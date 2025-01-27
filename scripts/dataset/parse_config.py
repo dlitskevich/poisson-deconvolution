@@ -30,7 +30,7 @@ class EstimationConfig:
 
     def to_json(self) -> dict:
         res = {
-            "estimators": [estim.name for estim in self.estimators],
+            "estimators": [estim.value for estim in self.estimators],
             "num_atoms": self.num_atoms,
             "scale": self.scale,
             "init_guess": self.init_guess,

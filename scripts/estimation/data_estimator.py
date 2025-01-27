@@ -15,7 +15,7 @@ from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
 from poisson_deconvolution.voronoi import VoronoiSplit
 from scripts.plotting.plot_config import PlotConfig
 from scripts.plotting.plot import plot_all_data, plot_estimated
-from scripts.dataset.read_dataset import read_dataset
+from scripts.dataset.read_dataset import save_dataset, read_dataset
 from scripts.dataset.path_constants import DATASET_DIR, OUTPUT_DIR
 
 
@@ -29,7 +29,6 @@ class DataEstimator:
 
         self.data, self.estim_config, self.kernel = read_dataset(dataset_path)
         logging.info(f"Successfully read dataset from {dataset_path}")
-        self.estim_config.dump(os.path.join(self.out_path, "config.json"))
 
         self.scale = self.estim_config.scale
         self.estimators = self.estim_config.estimators
@@ -56,6 +55,9 @@ class DataEstimator:
                 .sample_convolution()
                 .data
             )
+        save_dataset(self.data, self.estim_config, self.kernel, self.out_path)
+        logging.info(f"Successfully saved dataset to {self.out_path}")
+
         init_guess_num = self.estim_config.init_guess
         self.init_guess, data_denoised = mode_from_data(
             self.exp, init_guess_num, self.kernel
@@ -64,6 +66,7 @@ class DataEstimator:
         self.exp_denoised = MicroscopyExperiment.from_data(data_denoised)
 
         self.plot_all_data()
+        self.plot_kernel()
         logging.info(f"Successfully plotted data")
 
     def run_estimations(self):
@@ -120,4 +123,19 @@ class DataEstimator:
             self.estimators,
             savepath=savepath,
         )
+        plt.close()
+
+    def plot_kernel(self):
+        n_x, n_y = self.kernel.shape
+        n = max(n_x, n_y)
+        plt.imshow(
+            self.kernel.T,
+            origin="lower",
+            extent=[0, n_x / n, 0, n_y / n],
+            cmap="binary",
+        )
+        plt.xticks([])
+        plt.yticks([])
+        path = os.path.join(self.img_out_path, "kernel.pdf")
+        plt.savefig(path, bbox_inches="tight", dpi=300)
         plt.close()

@@ -17,14 +17,13 @@ from scripts.dataset.path_constants import DATASET_DIR, OUTPUT_DIR
 
 class PlotResults:
     def __init__(self, dataset: str):
-        dataset_path = os.path.join(DATASET_DIR, dataset)
         self.out_path = os.path.join(OUTPUT_DIR, dataset)
         self.img_out_path = os.path.join(self.out_path, "img-zoom")
         # also creates 'out_path'
         pathlib.Path(self.img_out_path).mkdir(parents=True, exist_ok=True)
 
-        self.data, _, self.kernel = read_dataset(dataset_path, no_config=True)
-        logging.info(f"Successfully read dataset from {dataset_path}")
+        self.data, _, self.kernel = read_dataset(self.out_path, no_config=True)
+        logging.info(f"Successfully read dataset from {self.out_path}")
         self.plt_config = PlotConfig.from_path(
             os.path.join(self.out_path, "plot_config.json")
         )
@@ -196,11 +195,12 @@ class PlotResults:
         markers = ["s", "o"]
         sizes = [9, 9]
         n_row = len(num_atoms_list)
-        plt.figure(figsize=(3 * len(splits), 3 * n_row))
+        n_col = len(splits)
+        fig = plt.figure(figsize=(3 * n_col, 3 * n_row))
 
         for k, num_atoms in enumerate(num_atoms_list):
-            for l in range(len(splits)):
-                plt.subplot(n_row, len(splits), k * len(splits) + l + 1)
+            for l in range(n_col):
+                plt.subplot(n_row, n_col, k * n_col + l + 1)
                 exp.plot_data("binary")
                 for j, estimations in enumerate(
                     [splits[l].estimations[num_atoms], splits[l].denoised[num_atoms]]
@@ -224,7 +224,14 @@ class PlotResults:
                 plt.ylim(self.y_lim)
                 plt.xticks([])
                 plt.yticks([])
-        plt.legend(loc="upper right", ncol=4, bbox_to_anchor=(0.0, -0.05))
+        plt.legend(
+            loc="upper center",
+            ncol=4,
+            bbox_to_anchor=(
+                0.5 - (1 + fig.subplotpars.wspace) * (n_col - 1) / 2,
+                -0.1,
+            ),
+        )
 
         savepath = self.img_out_path
         name = f"zoom_estim_{estimators[0].name}_{estimators[1].name}"
