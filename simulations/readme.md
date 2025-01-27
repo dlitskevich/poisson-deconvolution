@@ -35,10 +35,12 @@ The folder should contain a `config.json` file with the simulation settings.
 
 `n_bins` is the number of bins along each dimension.
 
-`t_values` is the illumination times.
+`t_values` is the illumination times. From $10^{start}$ to $10^{stop}$ with `num` points and `step` step.
 
 `scales` is the scales of the normal distribution (like standard deviation).
 
-`atoms_data` specifies the atoms to use in the simulation.
+`atoms_data` specifies the atoms to use in the simulation. `num_points` is the number of points along each dimension.
+
+<p align='center'><img src='../assets/points_arrangements.png' alt='points arrangements: grid, corners, u-shape' width='75%'> </p>
 
 Each pair `scale` and `n_bins` is considered as a setting. The `setting_id` is the index of the setting, used to run the simulation.

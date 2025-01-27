@@ -81,8 +81,11 @@ python -m scripts.plot_simulations `simulation_name`
 If you found our work useful, please consider citing us:
 
 ```bibtex
-@article{your_citation_key,
-
+@article{hundrieser2024minimax,
+  title   = {Minimax Rates for Discrete Signal Recovery with Applications to Photonic Imaging},
+  author  = {{Shayan Hundrieser, Tudor Manole, Danila Litskevich, and Axel Munk}},
+  year    = {2025},
+  journal = {In preparation}
 }
 ```
 
