@@ -30,7 +30,7 @@ For the corresponding `dataset` a folder is created with the same name. The fold
 
 `estimators` are the estimators used to estimate the parameters of the normal distribution.
 
-`deltas` used to Voronoi diagram, the smaller the value, the smaller the cell size.
+`deltas` used for Voronoi diagrams, the smaller the value, the smaller the cell size.
 
 `num_atoms` is the number of mixture components.
 
