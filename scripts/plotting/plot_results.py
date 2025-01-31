@@ -1,5 +1,3 @@
-import json
-import logging
 import os
 import pathlib
 
@@ -23,7 +21,7 @@ class PlotResults:
         pathlib.Path(self.img_out_path).mkdir(parents=True, exist_ok=True)
 
         self.data, _, self.kernel = read_dataset(self.out_path, no_config=True)
-        logging.info(f"Successfully read dataset from {self.out_path}")
+        print(f"Successfully read dataset from {self.out_path}")
         self.plt_config = PlotConfig.from_path(
             os.path.join(self.out_path, "plot_config.json")
         )
@@ -179,7 +177,7 @@ class PlotResults:
     def plot_estimated_zoomed(self):
         config = self.plt_config.zoom_estim_config
         if not config.valid:
-            logging.warning("Invalid zoom estimation configuration")
+            print("Invalid zoom estimation configuration")
             return
         num_atoms_list = config.num_atoms
         self._plot_estimated_zoomed(num_atoms_list, config.estimators)

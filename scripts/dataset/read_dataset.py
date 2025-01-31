@@ -5,7 +5,7 @@ import numpy as np
 
 from scripts.dataset.parse_config import EstimationConfig
 
-DATA_EXTS = [".npy"]
+DATA_EXTS = [".npy", ".csv", ".txt"]
 
 
 def get_filenames(dir_path: str) -> list:
@@ -26,6 +26,10 @@ def read_data_file(dir: str) -> np.ndarray:
     match ext:
         case ".npy":
             return np.load(os.path.join(dir, f"data{ext}"))
+        case ".csv":
+            return np.loadtxt(os.path.join(dir, f"data{ext}"), delimiter=",")
+        case ".txt":
+            return np.loadtxt(os.path.join(dir, f"data{ext}"), delimiter=",")
         case _:
             raise ValueError(f"Unsupported extension: {ext}")
 

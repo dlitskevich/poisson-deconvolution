@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 import pathlib
 
@@ -28,7 +27,7 @@ class DataEstimator:
         pathlib.Path(self.img_out_path).mkdir(parents=True, exist_ok=True)
 
         self.data, self.estim_config, self.kernel = read_dataset(dataset_path)
-        logging.info(f"Successfully read dataset from {dataset_path}")
+        print(f"Successfully read dataset from {dataset_path}")
 
         self.scale = self.estim_config.scale
         self.estimators = self.estim_config.estimators
@@ -45,7 +44,7 @@ class DataEstimator:
         ).dump(self.out_path)
 
         if self.kernel is None:
-            logging.info(
+            print(
                 f"No kernel found in {dataset_path}\nUsing std kernel with scale={self.scale}"
             )
             center = np.array([self.exp.n_bins])
@@ -56,18 +55,18 @@ class DataEstimator:
                 .data
             )
         save_dataset(self.data, self.estim_config, self.kernel, self.out_path)
-        logging.info(f"Successfully saved dataset to {self.out_path}")
+        print(f"Successfully saved dataset to {self.out_path}")
 
         init_guess_num = self.estim_config.init_guess
         self.init_guess, data_denoised = mode_from_data(
             self.exp, init_guess_num, self.kernel
         )
-        logging.info(f"Successfully made init guess")
+        print(f"Successfully made init guess")
         self.exp_denoised = MicroscopyExperiment.from_data(data_denoised)
 
         self.plot_all_data()
         self.plot_kernel()
-        logging.info(f"Successfully plotted data")
+        print(f"Successfully plotted data")
 
     def run_estimations(self):
         out_path = self.out_path
@@ -82,13 +81,13 @@ class DataEstimator:
         deltas = self.deltas
 
         for delta in deltas:
-            logging.info(f"Starting data estimation... {scale} scale {delta} delta")
+            print(f"Starting data estimation... {scale} scale {delta} delta")
             split = VoronoiSplit(self.init_guess, delta, data.shape)
             results = SplitEstimationsResults({}, split)
 
             file_path = os.path.join(out_path, f"estimations_d{delta}.json")
             for num_atoms in num_atoms_list:
-                logging.info(f"{num_atoms} number of components")
+                print(f"{num_atoms} number of components")
                 estimation_res = run_split_estimations(
                     data, split, estimators, num_atoms, scale, t, config
                 )
