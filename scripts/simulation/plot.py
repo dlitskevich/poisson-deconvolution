@@ -31,11 +31,11 @@ def plot_errors_bin_scale(
 ):
     estimators = [EstimatorType.Moment, EstimatorType.EMMoment]
     names = ["Moment", "EM"]
-    num = len(atoms_types)
-    plt.figure(figsize=(num * 5, len(scales) * 5))
+    n_col = len(atoms_types)
+    fig = plt.figure(figsize=(n_col * 5, len(scales) * 5))
     for j, scale in enumerate(scales):
         for i, atoms_type in enumerate(atoms_types):
-            ax = plt.subplot(len(scales), num, j * len(scales) + i + 1)
+            ax = plt.subplot(len(scales), n_col, j * len(scales) + i + 1)
             for l, estimator in enumerate(estimators):
                 ax.add_line(Line2D([], [], color="none", label=names[l]))
                 data.plot_errors_estimator(
@@ -49,7 +49,14 @@ def plot_errors_bin_scale(
                     scale_label=False,
                 )
             plt.title("")
-    plt.legend(loc="upper right", ncol=10, bbox_to_anchor=(0.9, -0.15))
+    plt.legend(
+        loc="upper center",
+        ncol=(1 + len(n_bins_list)) * n_col,
+        bbox_to_anchor=(
+            0.5 - (1 + fig.subplotpars.wspace) * (n_col - 1) / 2,
+            -0.15,
+        ),
+    )
 
     # plt.tight_layout()
     path = os.path.join(savepath, f"error_{"_".join(names)}.pdf")
@@ -69,7 +76,12 @@ def plot_time(
     res = {k: [] for k in keys}
     for n_bins in n_bins_list:
         for scale in scales:
-            time_data = data.get_time_data(scale, n_bins, atom_type, n_points)
+            try:
+                time_data = data.get_time_data(scale, n_bins, atom_type, n_points)
+            except LookupError as e:
+                print(e)
+                continue
+
             res_bin = {k: [] for k in keys}
             for name, times in time_data.items():
                 for i in range(len(keys)):

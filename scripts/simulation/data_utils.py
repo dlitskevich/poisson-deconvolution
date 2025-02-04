@@ -102,7 +102,11 @@ class StatsDataArray:
         saturations = [0.5, 0.7, 0.9, 1]
         for i, scale in enumerate(scales):
             for j, n_bins in enumerate(n_bins_list):
-                stat = self.find(scale, n_bins, n_points, atom_type)
+                try:
+                    stat = self.find(scale, n_bins, n_points, atom_type)
+                except LookupError as e:
+                    print(e)
+                    continue
                 mean_errors = [v[0][error_type.value] for v in stat.stats[estimator]]
                 label = f"scale: {scale} " if scale_label else ""
                 plt.loglog(
