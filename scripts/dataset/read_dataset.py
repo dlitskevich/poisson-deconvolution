@@ -2,10 +2,11 @@ import os
 import pathlib
 
 import numpy as np
+from PIL import Image
 
 from scripts.dataset.parse_config import EstimationConfig
 
-DATA_EXTS = [".npy", ".csv", ".txt"]
+DATA_EXTS = [".npy", ".csv", ".txt", ".png", ".tiff"]
 
 
 def get_filenames(dir_path: str) -> list:
@@ -26,10 +27,13 @@ def read_data_file(dir: str) -> np.ndarray:
     match ext:
         case ".npy":
             return np.load(os.path.join(dir, f"data{ext}"))
-        case ".csv":
+        case ".csv" | ".txt":
             return np.loadtxt(os.path.join(dir, f"data{ext}"), delimiter=",")
-        case ".txt":
-            return np.loadtxt(os.path.join(dir, f"data{ext}"), delimiter=",")
+        case ".png" | ".tiff":
+            image = Image.open(os.path.join(dir, f"data{ext}")).convert("L")
+            matrix = 255 - np.array(image)
+
+            return matrix / np.sum(matrix)
         case _:
             raise ValueError(f"Unsupported extension: {ext}")
 
