@@ -40,37 +40,37 @@ The experimental STED microscopy data from [here](https://doi.org/10.1214/17-AOS
   <img src="assets/data_zoom.png" width="49%"/> 
 </p>
 
-See `datasets/readme` for the setup instructions.
+See [`datasets/readme`](datasets/readme.md) for the setup instructions.
 
 ## Estimations
 
-After setting up the datasets, the estimations can be run via the `scripts/estimate.py` script:
+After setting up the datasets, the estimations can be run via the [`scripts/estimate.py`](scripts/estimate.py) script:
 
 ```sh
 python -m scripts.estimate `dataset_name`
 ```
 
-Once the estimations are done, the results can be plotted via the `scripts/plot.py` script:
+Once the estimations are done, the results can be plotted via the [`scripts/plot.py`](scripts/plot.py) script:
 
 ```sh
 python -m scripts.plot `dataset_name`
 ```
 
-The estimations with plots will be saved in the `results` folder. See `results/readme` for the plotting options.
+The estimations with plots will be saved in the `results` folder. See [`results/readme`](results/readme.md) for the plotting options.
 
 ![estimations](assets/estimations_zoom_example.png)
 
 ## Experiments
 
-The experiments can be run via the `scripts/simulate.py` script:
+The experiments can be run via the [`scripts/simulate.py`](scripts/simulate.py) script:
 
 ```sh
 python -m scripts.simulate `simulation_name` `setting_id`
 ```
 
-For more details, see `simulations/readme`.
+For more details, see [`simulations/readme`](simulations/readme.md).
 
-After the simulations are done, the results can be plotted via the `scripts/plot.py` script:
+After the simulations are done, the results can be plotted via the [`scripts/plot_simulations.py`](scripts/plot_simulations.py) script:
 
 ```sh
 python -m scripts.plot_simulations `simulation_name`
