@@ -68,7 +68,7 @@ def plot_estimations(
     t_list = [np.inf] + t_list
     n_col = len(n_bins_list)
     n_row = len(t_list)
-    plt.figure(figsize=(n_col * figsize, n_row * figsize))
+    plt.figure(figsize=(n_col * (figsize + 0.5), n_row * figsize))
     for i, t in enumerate(t_list):
         for j, n_bins in enumerate(n_bins_list):
             atoms = AtomsData.from_type(atoms_type).atoms

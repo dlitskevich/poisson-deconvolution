@@ -104,11 +104,11 @@ def plot_time(
         set_box_color(bpl, COLORS_ESTIMATORS[keys[i]])
         legends.append(bpl["boxes"][0])
 
-    plt.xticks(x_pos, n_bins_list)
+    plt.xticks(x_pos, [f"${n}^2$" for n in n_bins_list])
     plt.ylim(1e-4, 1e3)
     plt.yscale("log")
     plt.legend(legends, names, loc="upper left")
-    plt.xlabel("Number of bins")
+    plt.xlabel("$m$")
     plt.ylabel("Elapsed time, s")
 
 
