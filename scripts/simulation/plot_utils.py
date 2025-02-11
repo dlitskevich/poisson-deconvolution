@@ -1,5 +1,7 @@
+import os
 from typing import List
 from matplotlib import pyplot as plt
+import numpy as np
 
 from poisson_deconvolution.microscopy.atoms import AtomsData, AtomsType
 from poisson_deconvolution.microscopy.config import Config
@@ -43,13 +45,12 @@ def set_box_color(bp, color):
     plt.setp(bp["medians"], color=color)
 
 
-def plot_estimations_row(
+def plot_estimations(
     config: Config,
-    scale: float = 0.1,
-    t: float = 1e8,
-    n_bins_list: List[int] = [10, 20, 40],
-    atoms_type: AtomsType = AtomsType.Corners,
-    n_points: int = 4,
+    scale: float,
+    t_list: List[float],
+    n_bins_list: List[int],
+    atoms_type: AtomsType,
     figsize: float = 5.5,
     savepath=None,
 ):
@@ -58,64 +59,34 @@ def plot_estimations_row(
 
     Parameters:
         config (Config): The configuration for the experiment.
-        scale (float, optional): The scale parameter for the estimation. Defaults to 0.1.
-        t (float, optional): The illumination time. Defaults to 1e8.
-        n_bins_list (List[int], optional): The list of number of bins. Defaults to [10, 20, 40].
-        atoms_type (AtomsType, optional): The type of atoms. Defaults to AtomsType.Corners.
-        n_points (int, optional): The number of points for atoms. Defaults to 4.
+        scale (float): The scale parameter for the estimation.
+        t (float): The illumination time.
+        n_bins_list (List[int]): The list of number of bins.
+        atoms_type (AtomsType): The type of atoms.
         figsize (float, optional): The figure size. Defaults to 5.5.
     """
-    num = len(n_bins_list)
-    plt.figure(figsize=(num * figsize, figsize))
-    for i, n_bins in enumerate(n_bins_list):
-        atoms = AtomsData.from_type(atoms_type, n_points).atoms
-        exp = config.sampler(atoms, n_bins, scale, t).sample()
-        estim = MicroscopyEstimators(exp, scale, config)
-        plt.subplot(1, num, i + 1)
-        estim.plot()
-        plt.title(f"bins:{n_bins}")
-
-    plt.suptitle(
-        f"{atoms_type.name}({n_points} points) scale:{scale} t:{t:.0e}",
-        fontsize=16,
-        horizontalalignment="left",
-        x=0,
-    )
+    t_list = [np.inf] + t_list
+    n_col = len(n_bins_list)
+    n_row = len(t_list)
+    plt.figure(figsize=(n_col * figsize, n_row * figsize))
+    for i, t in enumerate(t_list):
+        for j, n_bins in enumerate(n_bins_list):
+            atoms = AtomsData.from_type(atoms_type).atoms
+            if t == np.inf:
+                exp = config.sampler(atoms, n_bins, scale, 1).sample_convolution()
+            else:
+                exp = config.sampler(atoms, n_bins, scale, t).sample()
+            estim = MicroscopyEstimators(exp, scale, config)
+            plt.subplot(n_row, n_col, n_col * i + j + 1)
+            estim.plot()
+            if i == 0:
+                plt.title(f"$m={n_bins}^2$")
+            if j == 0:
+                label = f"$t=10^{int(np.log10(t))}$" if t != np.inf else "$t=\infty$"
+                plt.ylabel(label)
 
     plt.tight_layout()
-
     if savepath is not None:
-        plt.savefig(f"{savepath}ind_{atoms_type.name}.png", bbox_inches="tight")
-
-
-def plot_estimations_atoms(
-    config: Config,
-    scale: float = 0.1,
-    t: float = 1e8,
-    n_bins_list: List[int] = [10, 20, 40],
-    atom_types: List[AtomsType] = [
-        AtomsType.Grid,
-        AtomsType.Line1,
-        AtomsType.Line2,
-        AtomsType.UShape,
-    ],
-    n_points: int = 4,
-    figsize: float = 5.5,
-    savepath=None,
-):
-    """
-    Plot estimations for different atom types.
-
-    Parameters:
-        config (Config): The configuration for the experiment.
-        scale (float, optional): The scale parameter for the estimation. Defaults to 0.1.
-        t (float, optional): The illumination time. Defaults to 1e8.
-        n_bins_list (List[int], optional): The list of number of bins. Defaults to [10, 20, 40].
-        atom_types (List[AtomsType], optional): The list of atom types. Defaults to [AtomsType.Grid, AtomsType.Line1, AtomsType.Line2, AtomsType.UShape].
-        n_points (int, optional): The number of points for atoms. Defaults to 4.
-        figsize (float, optional): The figure size. Defaults to 5.5.
-    """
-    for atom_type in atom_types:
-        plot_estimations_row(
-            config, scale, t, n_bins_list, atom_type, n_points, figsize, savepath
-        )
+        path = os.path.join(savepath, f"ind_{atoms_type.name}.pdf")
+        plt.savefig(path, bbox_inches="tight", dpi=300)
+    plt.close()

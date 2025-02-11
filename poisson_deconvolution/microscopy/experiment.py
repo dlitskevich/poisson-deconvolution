@@ -53,7 +53,7 @@ class MicroscopyExperiment:
         Parameters:
             c (str, optional): The color of the atoms. Defaults to "black".
         """
-        self.plot_data()
+        self.plot_data(cmap="binary")
         if self.atoms is not None:
             plt.scatter(self.atoms[:, 0], self.atoms[:, 1], marker=".", c=c, s=5)
 

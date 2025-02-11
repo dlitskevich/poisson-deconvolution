@@ -276,24 +276,23 @@ class MicroscopyEstimators:
     def plot(
         self,
         estimators: List[EstimatorType] = [
-            EstimatorType.MLEMoment,
             EstimatorType.EMMoment,
             EstimatorType.Moment,
         ],
-        colors: List[str] = ["red", "lightblue", "orange"],
-        sc: List[int] = [150, 70, 60],
-        markers: List[str] = ["o", "D", "s"],
-        names: List[str] = ["MLE", "EM", "MoM"],
+        colors: List[str] = ["red", "orange"],
+        sc: List[int] = [70, 50],
+        markers: List[str] = ["o", "s"],
+        names: List[str] = ["EM", "MoM"],
     ):
         """
         Plot the estimations.
 
         Parameters:
             estimators (List[EstimatorType], optional): The list of estimators to plot. Defaults to [EstimatorType.MLEMoment, EstimatorType.EMMoment, EstimatorType.Moment].
-            colors (List[str], optional): The colors for each estimator. Defaults to ["red", "lightblue", "orange"].
-            sc (List[int], optional): The sizes for each estimator. Defaults to [150, 70, 60].
-            markers (List[str], optional): The markers for each estimator. Defaults to ["o", "D", "s"].
-            names (List[str], optional): The names for each estimator. Defaults to ["MLE", "EM", "MoM"].
+            colors (List[str], optional): The colors for each estimator. Defaults to ["red", "orange"].
+            sc (List[int], optional): The sizes for each estimator. Defaults to [70, 60].
+            markers (List[str], optional): The markers for each estimator. Defaults to ["o", "s"].
+            names (List[str], optional): The names for each estimator. Defaults to ["EM", "MoM"].
 
         """
         estimations = [self.estimators[estim]() for estim in estimators]
@@ -317,8 +316,8 @@ class MicroscopyEstimators:
                 # label=f"{names[i]} ({err:.1e}/{tv_err:.0e})",
             )
         plt.legend(
-            loc="lower center",
-            bbox_to_anchor=(0.5, -0.1),
+            loc="upper center",
+            bbox_to_anchor=(0.5, 0),
             ncol=3,
         )
         self.experiment.plot(c="black")
