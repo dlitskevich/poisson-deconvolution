@@ -64,6 +64,7 @@ def read_dataset(dir_path: str, no_config=False):
 
     data = read_data_file(dir_path)
     data = data[::-1, :].T  # for correct orientation
+    print(f"Data shape: {data.shape}")
 
     config = read_config_file(dir_path) if not no_config else None
     kernel = read_kernel(dir_path)
