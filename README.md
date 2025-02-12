@@ -33,7 +33,7 @@ pip install -e .
 
 ## Datasets
 
-The experimental STED microscopy data from [here](https://doi.org/10.1214/17-AOS1669).
+The experimental STED microscopy data is considered from [here](https://doi.org/10.1214/17-AOS1669).
 
 <p align="center">
   <img src="assets/data.png" width="49%"/>

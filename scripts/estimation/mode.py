@@ -17,7 +17,7 @@ def mode_from_data(
         tuple[np.ndarray, np.ndarray]: The best locations and the denoised data.
     """
     data = experiment.data / experiment.data.sum()
-    n_bins = max(experiment.data.shape)
+    n_x, n_y = experiment.data.shape
     best_loc = -np.ones((num_atoms, 2))
     diff = data.copy()
 
@@ -26,15 +26,15 @@ def mode_from_data(
         mode_loc = experiment.bins_loc[max_id]
         best_loc[i, :] = mode_loc
         max_id_x, max_id_y = np.unravel_index(max_id, diff.shape)
-        left = max(0, max_id_x - n_bins // 2)
-        right = min(diff.shape[0], max_id_x + (n_bins + 1) // 2)
-        bottom = max(0, max_id_y - n_bins // 2)
-        top = min(diff.shape[1], max_id_y + (n_bins + 1) // 2)
+        left = max(0, max_id_x - n_x // 2)
+        right = min(diff.shape[0], max_id_x + (n_x + 1) // 2)
+        bottom = max(0, max_id_y - n_y // 2)
+        top = min(diff.shape[1], max_id_y + (n_y + 1) // 2)
 
         diff[left:right, bottom:top] -= (
             kernel[
-                n_bins // 2 - (max_id_x - left) : n_bins // 2 + (right - max_id_x),
-                n_bins // 2 - (max_id_y - bottom) : n_bins // 2 + (top - max_id_y),
+                n_x // 2 - (max_id_x - left) : n_x // 2 + (right - max_id_x),
+                n_y // 2 - (max_id_y - bottom) : n_y // 2 + (top - max_id_y),
             ]
             / kernel.max()
             * diff[max_id_x, max_id_y]
