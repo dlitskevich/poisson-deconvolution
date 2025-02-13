@@ -1,5 +1,5 @@
 {
-    "num_experiments": 20,
+    "num_experiments": 100,
     "n_bins": [
         10,
         20,
