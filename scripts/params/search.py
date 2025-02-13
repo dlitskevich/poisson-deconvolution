@@ -38,14 +38,21 @@ if __name__ == "__main__":
     for scale in scales:
         kernel = get_kernel(data.shape, scale, config)
         frac = data.shape[1] / data.shape[0]
-        plt.figure(figsize=(4 * len(init_guesses), 4 * frac))
+        plt.figure(figsize=(4 * len(init_guesses), 2 * 4 * frac))
         for j, init_guess in enumerate(init_guesses):
-            _, data_denoised = mode_from_data(exp, init_guess, kernel)
+            guesses, data_denoised = mode_from_data(exp, init_guess, kernel)
             exp_diff = MicroscopyExperiment.from_data(data - data_denoised)
 
-            plt.subplot(1, len(init_guesses), j + 1)
-            im = exp_diff.plot_data(cmap="binary")
+            plt.subplot(2, len(init_guesses), j + 1)
+            im = exp.plot_data(cmap="binary")
+            plt.scatter(*guesses.T, c="r", s=1)
+
             plt.title(f"Init guess: {init_guess}")
+            plt.xticks([])
+            plt.yticks([])
+
+            plt.subplot(2, len(init_guesses), len(init_guesses) + j + 1)
+            im = exp_diff.plot_data(cmap="binary")
             plt.xticks([])
             plt.yticks([])
 

@@ -48,4 +48,4 @@ then run [`../scripts/params/search.py`](../scripts/params/search.py) by
 python -m scripts.params.search `dataset_name`
 ```
 
-In the [`../results/{dataset_name}/img/search`](../results) folder, you will find the noise illustrations for each parameter combination.
+In the [`../results/{dataset_name}/img/search`](../results) folder, you will find the illustrations of the initial guesses together with residual noise for each parameter combination.
