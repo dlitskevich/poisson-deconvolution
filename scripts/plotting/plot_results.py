@@ -21,7 +21,7 @@ class PlotResults:
         pathlib.Path(self.img_out_path).mkdir(parents=True, exist_ok=True)
 
         self.data, _, self.kernel = read_dataset(self.out_path, no_config=True)
-        print(f"Successfully read dataset from {self.out_path}")
+
         self.plt_config = PlotConfig.from_path(
             os.path.join(self.out_path, "plot_config.json")
         )

@@ -30,3 +30,22 @@ Then Estimations are made for each sub domain. -->
 
 `estimators` are the estimators used to estimate the locations of the Gaussian mixture components (i.e. molecule locations).
 The supported estimators are: `EM (moment)`, `EM (mode)`, `Moment`.
+
+### Parameters comparison
+
+If you don't know which `scale` or `init_guess` to use, create a `search.json` file in the folder, with the following structure:
+
+```json
+{
+  "scales": [0.01, 0.02, 0.03, 0.04, 0.05],
+  "init_guesses": [40, 60, 80]
+}
+```
+
+then run [`../scripts/params/search.py`](../scripts/params/search.py) by
+
+```sh
+python -m scripts.params.search `dataset_name`
+```
+
+In the [`../results/{dataset_name}/img/search`](../results) folder, you will find the noise illustrations for each parameter combination.

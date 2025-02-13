@@ -5,6 +5,7 @@ import pathlib
 from matplotlib import pyplot as plt
 import numpy as np
 
+from scripts.dataset.kernel import get_kernel
 from scripts.estimation import (
     run_split_estimations,
     SplitEstimationsResults,
@@ -27,7 +28,6 @@ class DataEstimator:
         pathlib.Path(self.img_out_path).mkdir(parents=True, exist_ok=True)
 
         self.data, self.estim_config, self.kernel = read_dataset(dataset_path)
-        print(f"Successfully read dataset from {dataset_path}")
 
         self.scale = self.estim_config.scale
         self.estimators = self.estim_config.estimators
@@ -47,13 +47,8 @@ class DataEstimator:
             print(
                 f"No kernel found in {dataset_path}\nUsing std kernel with scale={self.scale}"
             )
-            center = np.array([self.exp.n_bins])
-            center = center / 2 / np.max(center)
-            self.kernel = (
-                self.config.sampler(center, self.data.shape, self.scale, 1)
-                .sample_convolution()
-                .data
-            )
+            self.kernel = get_kernel(self.data.shape, self.scale, self.config)
+
         save_dataset(self.data, self.estim_config, self.kernel, self.out_path)
         print(f"Successfully saved dataset to {self.out_path}")
 

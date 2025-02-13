@@ -75,6 +75,8 @@ def read_dataset(dir_path: str, no_config=False):
             f"Kernel shape {kernel.shape} does not match data shape {data.shape}"
         )
 
+    print(f"Successfully read dataset from {dir_path}")
+
     return data, config, kernel
 
 
