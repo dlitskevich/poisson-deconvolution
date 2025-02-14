@@ -4,9 +4,12 @@ import sys
 
 from matplotlib import pyplot as plt
 
+from poisson_deconvolution.microscopy.atoms import AtomsType
+from poisson_deconvolution.microscopy.config import Config
 from scripts.dataset.path_constants import SIMULATIONS_DIR
 from scripts.simulation.data_utils import StatsDataArray
 from scripts.simulation.plot import plot_data, plot_errors_bin_scale, plot_time_types
+from scripts.simulation.plot_utils import plot_estimations
 from scripts.simulation.simulation_config import SimulationConfig
 
 plt.rcParams.update(
@@ -40,3 +43,15 @@ if __name__ == "__main__":
     plot_errors_bin_scale(data, atoms_types, n_bins_list, scales, img_path)
 
     plot_time_types(data, atoms_types, n_bins_list, scales, img_path)
+
+    # Individual plots
+    # for atoms_type in [AtomsType.Grid, AtomsType.Corners]:
+    #     plot_estimations(
+    #         Config.std(),
+    #         scales[1],
+    #         [1e8, 1e5, 1e3],
+    #         n_bins_list[1:],
+    #         atoms_type,
+    #         3.5,
+    #         img_path,
+    #     )
