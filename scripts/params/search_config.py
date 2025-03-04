@@ -14,20 +14,24 @@ class SearchConfig:
         return SearchConfig(
             scales=spec["scales"],
             init_guesses=spec["init_guesses"],
+            deltas=spec["deltas"],
         )
 
     def __init__(
         self,
         scales: list[float],
         init_guesses: list[int],
+        deltas: list[float],
     ):
         self.scales = scales
         self.init_guesses = init_guesses
+        self.deltas = deltas
 
     def to_json(self) -> dict:
         return {
             "scales": self.scales,
             "init_guesses": self.init_guesses,
+            "deltas": self.deltas,
         }
 
     def dump(self, path: str):

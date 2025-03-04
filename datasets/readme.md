@@ -38,7 +38,8 @@ If you don't know which `scale` or `init_guess` to use, create a `search.json` f
 ```json
 {
   "scales": [0.01, 0.02, 0.03, 0.04, 0.05],
-  "init_guesses": [40, 60, 80]
+  "init_guesses": [40, 60, 80],
+  "deltas": [0.025, 0.05, 0.075]
 }
 ```
 
