@@ -37,9 +37,9 @@ def run_split_estimations(
     res = []
     mass = np.sum(sample)
 
-    n_components = split.n_components - 1
+    n_components = split.n_components
     for i in range(n_components):
-        print(f"Starting data estimation for split {i}/{n_components}")
+        print(f"Starting data estimation for split {i}/{n_components-1}")
         data_split = split.split_data(sample, i)
         split_mass = np.sum(data_split.data)
         split_num_atoms = int(np.round(split_mass / mass * num_atoms))
