@@ -14,7 +14,7 @@ def plot_all_data(exps: list[MicroscopyExperiment], savepath: str):
         plt.yticks([])
         name = "data" + PREFIX[l]
         path = os.path.join(savepath, name + ".pdf")
-        plt.savefig(path, bbox_inches="tight", dpi=300)
+        plt.savefig(path, bbox_inches="tight", dpi=600)
 
 
 def plot_estimated(
@@ -29,7 +29,7 @@ def plot_estimated(
     estimations = [split_res.estimations, split_res.denoised]
     for estimator in estimators:
         for l, estims in enumerate(estimations):
-            plt.figure(figsize=(3 * n_col, 3))
+            plt.figure(figsize=(4 * n_col, 4))
             for k, num_atoms in enumerate(num_atoms_list):
                 plt.subplot(1, n_col, k + 1)
                 exp.plot_data("binary")
@@ -42,4 +42,4 @@ def plot_estimated(
                 name = f"estims{PREFIX[l]}_d{delta}_{estimator.name}_"
                 name += "_".join([str(n) for n in num_atoms_list])
                 path = os.path.join(savepath, name + ".pdf")
-                plt.savefig(path, bbox_inches="tight", dpi=300)
+                plt.savefig(path, bbox_inches="tight", dpi=600)

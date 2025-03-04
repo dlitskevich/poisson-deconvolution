@@ -18,7 +18,7 @@ def plot_data(atoms_data_list: list[AtomsData], savepath: str):
         plt.xticks([])
         plt.yticks([])
     path = os.path.join(savepath, "points_arrangements.pdf")
-    plt.savefig(path, bbox_inches="tight", dpi=300)
+    plt.savefig(path, bbox_inches="tight", dpi=600)
     plt.close()
 
 
@@ -60,7 +60,7 @@ def plot_errors_bin_scale(
 
     # plt.tight_layout()
     path = os.path.join(savepath, f"error_{"_".join(names)}.pdf")
-    plt.savefig(path, bbox_inches="tight", dpi=300)
+    plt.savefig(path, bbox_inches="tight", dpi=600)
     plt.close()
 
 
@@ -128,5 +128,5 @@ def plot_time_types(
             plt.ylabel("")
 
     path = os.path.join(savepath, "time_complexity.pdf")
-    plt.savefig(path, bbox_inches="tight", dpi=300)
+    plt.savefig(path, bbox_inches="tight", dpi=600)
     plt.close

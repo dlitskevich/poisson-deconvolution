@@ -83,9 +83,11 @@ class DataEstimator:
             file_path = os.path.join(out_path, f"estimations_d{delta}.json")
             for num_atoms in num_atoms_list:
                 print(f"{num_atoms} number of components")
+                print(f"Estimating with original data")
                 estimation_res = run_split_estimations(
                     data, split, estimators, num_atoms, scale, t, config
                 )
+                print(f"Estimating with denoised data")
                 denoised_estimation_res = run_split_estimations(
                     data_denoised,
                     split,
@@ -131,5 +133,5 @@ class DataEstimator:
         plt.xticks([])
         plt.yticks([])
         path = os.path.join(self.img_out_path, "kernel.pdf")
-        plt.savefig(path, bbox_inches="tight", dpi=300)
+        plt.savefig(path, bbox_inches="tight", dpi=600)
         plt.close()

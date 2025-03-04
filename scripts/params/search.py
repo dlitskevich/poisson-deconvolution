@@ -79,5 +79,5 @@ if __name__ == "__main__":
             print(f"Scale: {scale}, init guess: {init_guess}")
         plt.suptitle(f"Scale: {scale}", x=0.0, horizontalalignment="left")
         plt.tight_layout()
-        plt.savefig(os.path.join(img_out_path, f"search_{scale}.pdf"), dpi=300)
+        plt.savefig(os.path.join(img_out_path, f"search_{scale}.pdf"), dpi=600)
         plt.close()

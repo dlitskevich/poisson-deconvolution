@@ -88,5 +88,5 @@ def plot_estimations(
     plt.tight_layout()
     if savepath is not None:
         path = os.path.join(savepath, f"ind_{atoms_type.name}.pdf")
-        plt.savefig(path, bbox_inches="tight", dpi=300)
+        plt.savefig(path, bbox_inches="tight", dpi=600)
     plt.close()

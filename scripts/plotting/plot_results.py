@@ -53,7 +53,7 @@ class PlotResults:
                     + ("_zoom" if is_zoom else "")
                 )
                 path = os.path.join(savepath, name + ".pdf")
-                plt.savefig(path, bbox_inches="tight", dpi=300)
+                plt.savefig(path, bbox_inches="tight", dpi=600)
                 plt.close()
 
     def _plot_data(self, is_zoom, init_points=None):
