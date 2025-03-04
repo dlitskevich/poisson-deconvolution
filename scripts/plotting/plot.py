@@ -34,7 +34,9 @@ def plot_estimated(
                 plt.subplot(1, n_col, k + 1)
                 exp.plot_data("binary")
                 for s, e in enumerate(estims[num_atoms]):
-                    e.plot(estimator, color=COLORS[l], alpha=0.5, s=9)
+                    e.plot(
+                        estimator, color=COLORS[l], alpha=0.5, s=1, edgecolors="none"
+                    )
                 plt.xticks([])
                 plt.yticks([])
 
