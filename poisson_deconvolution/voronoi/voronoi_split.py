@@ -1,6 +1,7 @@
 import json
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.spatial import KDTree
 
 from poisson_deconvolution.microscopy.experiment import generate_bins_loc
 
@@ -59,20 +60,20 @@ class VoronoiSplit:
         nodes = np.array(raw["nodes"])
         delta = raw["delta"]
         n_bins = raw["n_bins"]
-        components = [np.array(component) for component in raw["components"]]
+        components = raw["components"]
         split = np.array(raw["split"])
         return cls(nodes, delta, n_bins, components, split)
 
     @classmethod
     def empty(cls, n_bins: tuple[int] | int):
-        return cls(np.array([]), None, n_bins, np.array([[0]]), np.array([0]))
+        return cls(np.array([]), None, n_bins, [[0]], np.array([0]))
 
     def __init__(
         self,
         nodes: np.ndarray,
         delta: float,
         n_bins: tuple[int] | int,
-        components: list[np.ndarray] = None,
+        components: list[list[int]] = None,
         split: np.ndarray = None,
     ) -> None:
         self.nodes = nodes.copy()
@@ -94,16 +95,15 @@ class VoronoiSplit:
     def split_grid(self):
         grid = generate_bins_loc(self.n_bins)
         components = self.components
-        split_grid = -np.ones(np.prod(self.n_bins))
-        for i, node in enumerate(grid):
-            min_dist = np.inf
-            for j, component in enumerate(components):
-                dist = np.min(np.linalg.norm(component - node, axis=1))
-                if dist < min_dist:
-                    min_dist = dist
-                    split_grid[i] = j
 
-        return split_grid.reshape(self.n_bins)
+        tree = KDTree(self.nodes)
+        _, labels = tree.query(grid)
+        result = np.zeros_like(labels, dtype=int)
+        for i, component in enumerate(components):
+            for id in component:
+                result[labels == id] = i
+
+        return result.reshape(self.n_bins)
 
     def split_data(self, data: np.ndarray, id: int) -> DataSplit:
         masked, data_mask = self._masked_data(data, id)
@@ -124,7 +124,7 @@ class VoronoiSplit:
             "nodes": self.nodes.tolist(),
             "delta": self.delta,
             "n_bins": self.n_bins,
-            "components": [component.tolist() for component in self.components],
+            "components": self.components,
             "split": self.split.tolist(),
         }
         return raw
@@ -134,14 +134,21 @@ class VoronoiSplit:
             json.dump(self.to_json(), file)
 
     def plot_split(self, cmap="tab20", components=False, **kwargs):
+        n_x, n_y = self.n_bins
+        n = max(n_x, n_y)
         plt.imshow(
-            self.split.T, origin="lower", extent=[0, 1, 0, 1], cmap=cmap, **kwargs
+            self.split.T,
+            origin="lower",
+            extent=[0, n_x / n, 0, n_y / n],
+            cmap=cmap,
+            **kwargs,
         )
         if components:
             self.plot_components()
 
     def plot_components(self):
-        for i, cluster in enumerate(self.components):
+        for i, cluster_components in enumerate(self.components):
+            cluster = np.array([self.nodes[i] for i in cluster_components])
             plt.scatter(
                 cluster[:, 0],
                 cluster[:, 1],
@@ -174,6 +181,6 @@ def connected_components(nodes: np.ndarray, delta: float) -> list[np.ndarray]:
             look_ids.update(connected - component)
             ids = ids - connected
             component = component | connected
-        components.append(np.array([nodes[i] for i in component]))
+        components.append(list(component))
 
     return components
