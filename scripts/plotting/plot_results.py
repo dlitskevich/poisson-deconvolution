@@ -176,9 +176,6 @@ class PlotResults:
 
     def plot_estimated_zoomed(self):
         config = self.plt_config.zoom_estim_config
-        if not config.valid:
-            print("Invalid zoom estimation configuration")
-            return
         num_atoms_list = config.num_atoms
         self._plot_estimated_zoomed(num_atoms_list, config.estimators)
 
@@ -189,8 +186,12 @@ class PlotResults:
         splits = self.results
         labels = [est.value.split(" ", 1)[0] for est in estimators]
         labels = labels + [f"{l} (denoised)" for l in labels]
-        colors = ["teal", "blue", "darkorange", "r"]
-        markers = ["s", "o"]
+
+        colors = [
+            {EstimatorType.Moment: "teal", EstimatorType.EMMoment: "blue"},
+            {EstimatorType.Moment: "darkorange", EstimatorType.EMMoment: "r"},
+        ]
+        markers = {EstimatorType.Moment: "s", EstimatorType.EMMoment: "o"}
         sizes = [9, 9]
         n_row = len(num_atoms_list)
         n_col = len(splits)
@@ -206,17 +207,17 @@ class PlotResults:
                     for s, e in enumerate(estimations):
                         for i, estim in enumerate(estimators):
                             label = (
-                                labels[2 * j + i]
+                                labels[len(estimators) * j + i]
                                 if (s == 0) and (k == n_row - 1)
                                 else None
                             )
                             e.plot(
                                 estim,
-                                colors[2 * j + i],
+                                colors[j][estim],
                                 0.5,
                                 sizes[i],
                                 label=label,
-                                marker=markers[i],
+                                marker=markers[estim],
                             )
                 plt.xlim(self.x_lim)
                 plt.ylim(self.y_lim)
@@ -232,7 +233,8 @@ class PlotResults:
         )
 
         savepath = self.img_out_path
-        name = f"zoom_estim_{estimators[0].name}_{estimators[1].name}"
+        name = "zoom_estim_"
+        name += "_".join(str(est.name) for est in estimators)
         name += "_n" + "_".join(str(n) for n in num_atoms_list)
         name += "_d" + "_".join([str(s.split.delta) for s in splits])
         plt.savefig(os.path.join(savepath, name + ".pdf"), bbox_inches="tight", dpi=600)

@@ -34,7 +34,6 @@ class PlotZoomEstimConfig:
     def __init__(self, estimators: list[EstimatorType], num_atoms: list):
         self.estimators = estimators
         self.num_atoms = num_atoms
-        self.valid = True if len(estimators) == 2 else False
 
     def to_json(self):
         return {
