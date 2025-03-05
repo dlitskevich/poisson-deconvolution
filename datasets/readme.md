@@ -12,7 +12,8 @@
   "scale": 0.01,
   "estimators": ["EM (moment)", "Moment"],
   "init_guess": 110,
-  "deltas": [0.025, 0.05, 0.075, 0.1]
+  "deltas": [0.025, 0.05, 0.075, 0.1],
+  "n_processes": 4
 }
 ```
 
@@ -31,9 +32,11 @@ Then Estimations are made for each sub domain. -->
 `estimators` are the estimators used to estimate the locations of the Gaussian mixture components (i.e. molecule locations).
 The supported estimators are: `EM (moment)`, `EM (mode)`, `Moment`.
 
+`n_processes` is the number of processes to use for parallelization. If not provided, 1 process will be used.
+
 ### Parameters comparison
 
-If you don't know which `scale` or `init_guess` to use, create a `search.json` file in the folder, with the following structure:
+If you don't know which `scale` or `init_guess` or `deltas` to use, create a `search.json` file in the folder, with the following structure:
 
 ```json
 {

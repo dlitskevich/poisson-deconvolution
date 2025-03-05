@@ -1,4 +1,5 @@
 import json
+import os
 import numpy as np
 from poisson_deconvolution.microscopy.config import Config
 from poisson_deconvolution.microscopy.estimators import EstimatorType
@@ -20,6 +21,7 @@ class EstimationConfig:
         config: Config,
         deltas: list[float],
         init_guess: int,
+        n_processes: int,
     ):
         self.estimators = estimators
         self.num_atoms = num_atoms
@@ -27,6 +29,7 @@ class EstimationConfig:
         self.config = config
         self.deltas = deltas
         self.init_guess = init_guess
+        self.n_processes = n_processes
 
     def to_json(self) -> dict:
         res = {
@@ -35,6 +38,7 @@ class EstimationConfig:
             "scale": self.scale,
             "init_guess": self.init_guess,
             "deltas": self.deltas,
+            "n_processes": self.n_processes,
         }
         if self.config.inner_scale != 1:
             res["covariance"] = self.config.inner_scale.tolist()
@@ -100,6 +104,16 @@ def parse_config(spec: dict) -> dict:
     except KeyError:
         covariance = None
 
+    n_processes = spec.get("n_processes", 1)
+    cpu_nodes = os.cpu_count()
+    print(f"Using {n_processes} processes out of {cpu_nodes} available")
+    if n_processes > cpu_nodes:
+        raise ValueError(
+            f"Number of processes ({n_processes}) exceeds available CPU nodes ({cpu_nodes})"
+        )
+
     config = Config.std() if covariance is None else Config.normal(covariance)
 
-    return EstimationConfig(estimators, num_atoms, scale, config, deltas, init_guess)
+    return EstimationConfig(
+        estimators, num_atoms, scale, config, deltas, init_guess, n_processes
+    )

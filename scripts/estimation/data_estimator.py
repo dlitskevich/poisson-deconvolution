@@ -29,6 +29,8 @@ class DataEstimator:
 
         self.data, self.estim_config, self.kernel = read_dataset(dataset_path)
 
+        self.n_processes = self.estim_config.n_processes
+
         self.scale = self.estim_config.scale
         self.estimators = self.estim_config.estimators
         self.config = self.estim_config.config
@@ -65,6 +67,7 @@ class DataEstimator:
 
     def run_estimations(self):
         out_path = self.out_path
+        n_processes = self.n_processes
         num_atoms_list = self.estim_config.num_atoms
         scale = self.scale
         config = self.config
@@ -85,7 +88,7 @@ class DataEstimator:
                 print(f"{num_atoms} number of components")
                 print(f"Estimating with original data")
                 estimation_res = run_split_estimations(
-                    data, split, estimators, num_atoms, scale, t, config
+                    data, split, estimators, num_atoms, scale, t, config, n_processes
                 )
                 print(f"Estimating with denoised data")
                 denoised_estimation_res = run_split_estimations(
@@ -96,6 +99,7 @@ class DataEstimator:
                     scale,
                     t_denoised,
                     config,
+                    n_processes,
                 )
 
                 results.add_result(num_atoms, estimation_res)
