@@ -1,6 +1,11 @@
 ## Here the results are stored
 
-For the corresponding `dataset` a folder is created with the same name. The folder contains the estimations, the `config.json` file used for the estimation and `plot-config.json` file used for plotting the results (only specified parameters are plotted).
+For the corresponding `dataset` a folder is created with the same name. The folder contains the estimations in two ways:
+
+- `estimations_d{delta}.json` aggregated estimations,
+- `estimations/estim_{denoised}_d{delta}_n{num_atoms}_sc{scale}_{estimator}.json` explicit locations.
+
+Also the folder contains the `config.json` file used for the estimation and `plot-config.json` file used for plotting the results (only specified parameters are plotted).
 
 ```json
 {

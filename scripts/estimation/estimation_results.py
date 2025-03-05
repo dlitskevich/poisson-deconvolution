@@ -1,4 +1,5 @@
 import json
+import os
 from matplotlib import pyplot as plt
 import numpy as np
 from poisson_deconvolution.microscopy.estimators import (
@@ -92,3 +93,23 @@ class SplitEstimationsResults:
                 num: [v.to_json() for v in val] for num, val in self.denoised.items()
             },
         }
+
+    def dump_estimations(
+        self,
+        path: str,
+        num_atoms: int,
+        estimators: list[EstimatorType],
+        scale: float,
+        denoised=False,
+    ):
+        prefix = "_denoised_" if denoised else "_"
+        delta = self.split.delta
+        for estim in estimators:
+            filename = f"estim{prefix}d{delta}_n{num_atoms}_sc{scale}_{estim.name}.json"
+            res = []
+            estimations = self.denoised if denoised else self.estimations
+            for estim_results in estimations[num_atoms]:
+                res += estim_results.data[estim].tolist()
+
+            with open(os.path.join(path, filename), "w") as file:
+                json.dump(res, file)

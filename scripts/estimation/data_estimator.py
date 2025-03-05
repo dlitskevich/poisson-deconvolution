@@ -107,7 +107,22 @@ class DataEstimator:
 
                 with open(file_path, "w") as file:
                     json.dump(results.to_json(), file)
+                self.dump_estimations(results, num_atoms, scale)
+
             self.plot_estimated_data(results)
+
+    def dump_estimations(
+        self, results: SplitEstimationsResults, num_atoms: int, scale: float
+    ):
+        out_dir = os.path.join(self.out_path, "estimations")
+        pathlib.Path(out_dir).mkdir(parents=True, exist_ok=True)
+
+        results.dump_estimations(
+            out_dir, num_atoms, self.estimators, scale, denoised=False
+        )
+        results.dump_estimations(
+            out_dir, num_atoms, self.estimators, scale, denoised=True
+        )
 
     def plot_all_data(self):
         savepath = self.img_out_path
