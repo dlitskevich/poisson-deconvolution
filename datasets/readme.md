@@ -1,8 +1,8 @@
-## Store your data here
+## Preliminary steps before performing estimation
 
 1. create a folder in this `datasets` folder with a desired name (this name is used to identify the dataset)
 2. store your data, named `data` in the folder, supported file formats: `.npy` (numpy array), `.csv` (',' delimiter), `.txt` (',' delimiter), .png, .tiff (use images with white background).
-3. create a `config.json` file in the folder, with the following structure:
+3. to run the estimation procedure you will need to specify certain parameters. To this end, create a `config.json` file in the folder, with the following structure: (If you do not know which parameter to choose, go to the bottom of this file)
    <!--add that it is used only for the initialization 4. (optional) store `kernel` in the folder, supported file formats: `.npy`. It should be the same size as `data`. If not provided the normal distribution with `scale` will be used. Only for initialization. -->
    <!-- 4. explain how to set kernel_bandwidth i.e scale -->
 

@@ -40,9 +40,12 @@ The experimental STED microscopy data is considered from [here](https://doi.org/
   <img src="assets/data_zoom.png" width="49%"/> 
 </p>
 
-See [`datasets/readme`](datasets/readme.md) for the setup instructions.
+See [`datasets/readme`](datasets/readme.md) for the setup instructions. 
+
+
 
 ## Estimations
+Say that one needs to specify some relevant parameters
 
 After setting up the datasets, the estimations can be run via the [`scripts/estimate.py`](scripts/estimate.py) script:
 
