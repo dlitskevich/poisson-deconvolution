@@ -31,6 +31,54 @@ To install the library, run:
 pip install -e .
 ```
 
+## Usage
+
+This section provides an overview of how to perform estimations and run simulations.
+
+### Estimations
+
+To perform estimations for your own data, follow these steps:
+
+1. **Prepare your data**: Follow the [`datasets/readme`](datasets/readme.md) for detailed instructions on setting up your datasets.
+
+2. **Configure parameters**: Along with the data, provide the necessary parameters for the estimations. Refer to the [`datasets/readme`](datasets/readme.md) for the details.
+
+3. **Run estimations**: Use the [`scripts/estimate.py`](scripts/estimate.py) script to perform estimations on your dataset. Replace `dataset_name` with the name of your dataset.
+
+```sh
+python -m scripts.estimate dataset_name
+```
+
+4. **Plot results**: After running the estimations, visualize the results using the [`scripts/plot.py`](scripts/plot.py) script. Replace `dataset_name` with the name of your dataset. Refer to the [`results/readme`](results/readme.md) for plotting configurations.
+
+```sh
+python -m scripts.plot dataset_name
+```
+
+The estimations with plots will be saved in the `results/{dataset_name}` folder. Refer to the [`results/readme`](results/readme.md) for more details.
+
+![estimations](assets/estimations_zoom_example.png)
+
+### Simulations
+
+To run simulations for evaluating the performance of the estimators, follow these steps:
+
+1. **Configure simulation settings**: Define the simulation settings in the configuration file. Refer to the [`simulations/readme`](simulations/readme.md) for detailed instructions on setting up your simulations.
+
+2. **Run simulations**: Execute the simulations using the [`scripts/simulate.py`](scripts/simulate.py) script. Replace `simulation_name` and `setting_id` with your specific simulation parameters. Refer to the [`simulations/readme`](simulations/readme.md) for more details.
+
+```sh
+python -m scripts.simulate simulation_name setting_id
+```
+
+3. **Plot simulation results**: After running the simulations, visualize the results using the [`scripts/plot_simulations.py`](scripts/plot_simulations.py) script. Replace `simulation_name` with the name of your simulation.
+
+```sh
+python -m scripts.plot_simulations simulation_name
+```
+
+The simulation results and plots will be saved in the `simulations/{simulation_name}` folder. Refer to the [`simulations/readme`](simulations/readme.md) for more details.
+
 ## Datasets
 
 The experimental STED microscopy data is considered from [here](https://doi.org/10.1214/17-AOS1669).
@@ -39,45 +87,6 @@ The experimental STED microscopy data is considered from [here](https://doi.org/
   <img src="assets/data.png" width="49%"/>
   <img src="assets/data_zoom.png" width="49%"/> 
 </p>
-
-See [`datasets/readme`](datasets/readme.md) for the setup instructions. 
-
-
-
-## Estimations
-Say that one needs to specify some relevant parameters
-
-After setting up the datasets, the estimations can be run via the [`scripts/estimate.py`](scripts/estimate.py) script:
-
-```sh
-python -m scripts.estimate `dataset_name`
-```
-
-Once the estimations are done, the results can be plotted via the [`scripts/plot.py`](scripts/plot.py) script:
-
-```sh
-python -m scripts.plot `dataset_name`
-```
-
-The estimations with plots will be saved in the `results` folder. See [`results/readme`](results/readme.md) for the plotting options.
-
-![estimations](assets/estimations_zoom_example.png)
-
-## Experiments
-
-The experiments can be run via the [`scripts/simulate.py`](scripts/simulate.py) script:
-
-```sh
-python -m scripts.simulate `simulation_name` `setting_id`
-```
-
-For more details, see [`simulations/readme`](simulations/readme.md).
-
-After the simulations are done, the results can be plotted via the [`scripts/plot_simulations.py`](scripts/plot_simulations.py) script:
-
-```sh
-python -m scripts.plot_simulations `simulation_name`
-```
 
 ## Citation
 
