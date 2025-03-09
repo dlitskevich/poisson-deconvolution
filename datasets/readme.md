@@ -1,10 +1,11 @@
-## Preliminary steps before performing estimation
+## Setting up a dataset
 
-1. create a folder in this `datasets` folder with a desired name (this name is used to identify the dataset)
-2. store your data, named `data` in the folder, supported file formats: `.npy` (numpy array), `.csv` (',' delimiter), `.txt` (',' delimiter), .png, .tiff (use images with white background).
-3. to run the estimation procedure you will need to specify certain parameters. To this end, create a `config.json` file in the folder, with the following structure: (If you do not know which parameter to choose, go to the bottom of this file)
-   <!--add that it is used only for the initialization 4. (optional) store `kernel` in the folder, supported file formats: `.npy`. It should be the same size as `data`. If not provided the normal distribution with `scale` will be used. Only for initialization. -->
-   <!-- 4. explain how to set kernel_bandwidth i.e scale -->
+1. Create a folder in this `datasets` directory with a desired name (this `dataset_name` is used to identify the dataset).
+2. Store your data, named `data`, in the folder. Supported file formats: `.npy` (numpy array), `.csv` (comma delimited), `.txt` (comma delimited), `.png`, `.tiff` (use images with a white background).
+
+## Configuring estimation parameters
+
+To run the estimation procedure, you will need to specify certain parameters. Create a `config.json` file in the folder with the following structure:
 
 ```json
 {
@@ -17,26 +18,31 @@
 }
 ```
 
-<!-- explain the algorithm
-that algorithm works well only for small amount of points, that's why first we segment the image via Voronoi cells, using delta.
-Then Estimations are made for each sub domain. -->
+If you do not know which parameter to choose, go to the [Parameters comparison](#parameters-comparison) section.
 
-`init_guess` is the number of initial guesses to create Voronoi diagrams and to denoise data.
+It is not recommended to redo the estimation procedure (otherwise, some results will be overwritten).
+Instead, create a new folder with a new `config.json` file and run the estimation procedure again.
 
-`deltas` used for Voronoi diagrams, the smaller the value, the smaller the cell size.
+### Parameter descriptions
 
-`num_atoms` is the number of mixture components.
+- `init_guess`: The number of seeds to create Voronoi diagrams and to denoise the data.
+- `deltas`: Used to join the cells in the Voronoi diagram, if the distance between the seeds is less than `delta`. The smaller the value, the smaller the resulting cell size.
+- `num_atoms`: The number of mixture components (i.e. the number of molecules).
+- `scale`: The standard deviation of the normal distribution, which is used as a convolution kernel in the data. Note that the data space is $[0,1]^2$.
+- `estimators`: The estimators used to estimate the locations of the Gaussian mixture components (i.e., molecule locations). Supported estimators: `EM (moment)`, `EM (mode)`, `Moment`.
+- `n_processes`: The number of processes to use for parallelization. If not provided, 1 process will be used.
 
-`scale` is the standard deviation of the normal distribution, which is used as a convolution kernel in the data. Note that the data space is [0,1]^2
+### Algorithm overview
 
-`estimators` are the estimators used to estimate the locations of the Gaussian mixture components (i.e. molecule locations).
-The supported estimators are: `EM (moment)`, `EM (mode)`, `Moment`.
+The algorithm consists of the following steps:
 
-`n_processes` is the number of processes to use for parallelization. If not provided, 1 process will be used.
+1. **Initial mode selection**: The `init_guess` number of modes are selected from the data. The data is denoised by removing the modes convolved with the normal distribution with standard deviation `scale`.
+2. **Voronoi segmentation**: The data is segmented into Voronoi cells using the initial modes as seeds. The cells are joined if the distance between the seeds is less than `delta`.
+3. **Estimations**: The estimations are made for each cell with the number of mixture components proportional to the mass of the data enclosed by the cell.
 
-### Parameters comparison
+### <a name="parameters-comparison"></a> Parameters comparison
 
-If you don't know which `scale` or `init_guess` or `deltas` to use, create a `search.json` file in the folder, with the following structure:
+If you don't know which `scale`, `init_guess`, or `deltas` to use, create a `search.json` file in the folder with the following structure:
 
 ```json
 {
@@ -46,10 +52,10 @@ If you don't know which `scale` or `init_guess` or `deltas` to use, create a `se
 }
 ```
 
-then run [`../scripts/params/search.py`](../scripts/params/search.py) by
+Use [`../scripts/params/search.py`](../scripts/params/search.py) script to search the parameters. Replace `dataset_name` with the name of your dataset.
 
 ```sh
-python -m scripts.params.search `dataset_name`
+python -m scripts.params.search dataset_name
 ```
 
-In the [`../results/{dataset_name}/img/search`](../results) folder, you will find the illustrations of the initial guesses together with residual noise for each parameter combination.
+In the [`../results/{dataset_name}/img/search`](../results) folder, the illustrations can be found depicting the initial guesses together with residual noise and Voronoi diagrams for each parameter combination.

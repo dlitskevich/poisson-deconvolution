@@ -1,6 +1,6 @@
 ## Configuring simulation settings
 
-1. Create a folder in the `simulations` directory with a desired name (this `simulation_name` is used to identify the simulation).
+1. Create a folder in this `simulations` directory with a desired name (this `simulation_name` is used to identify the simulation).
 2. Store the `config.json` file in the folder with the following structure:
 
 ```json
@@ -31,7 +31,7 @@
 }
 ```
 
-### Parameters
+### Parameter descriptions
 
 - `num_experiments`: The number of experiments to average the results over.
 - `n_bins`: The number of bins along each dimension.
