@@ -1,11 +1,18 @@
-## Here the results are stored
+## Results overview
 
-For the corresponding `dataset` a folder is created with the same name. The folder contains the estimations in two ways:
+For the corresponding `dataset_name` a folder is created with the same name. The folder contains the following files:
 
+- `data.npy` original data,
+- `kernel.npy` convolution kernel,
+- `config.json` configuration file used for the estimation,
+- `plot-config.json` configuration file used for plotting,
 - `estimations_d{delta}.json` aggregated estimations,
-- `estimations/estim_{denoised}_d{delta}_n{num_atoms}_sc{scale}_{estimator}.json` explicit locations.
+- `estimations/estim_{denoised}_d{delta}_n{num_atoms}_sc{scale}_{estimator}.json` only explicit locations of the estimations,
+- `img/` and `img-zoom/` folders with plots.
 
-Also the folder contains the `config.json` file used for the estimation and `plot-config.json` file used for plotting the results (only specified parameters are plotted).
+## Plotting configurations
+
+During the estimation procedure, the `plot-config.json` file is created in the folder. The file is used for plotting the results and has the following structure:
 
 ```json
 {
@@ -26,32 +33,33 @@ Also the folder contains the `config.json` file used for the estimation and `plo
 }
 ```
 
-`x_lim` and `y_lim` are the limits of the zoom-in region.
+Only specified parameters are used for plotting.
+
+### Parameter descriptions
+
+- `x_lim` and `y_lim`: Define the limits of the zoom-in region on the plots.
 
 <p align="center">
   <img src="../assets/data.png" width="49%"/>
   <img src="../assets/data_zoom.png" width="49%"/> 
 </p>
 
-`estimators` are the estimators used to estimate the parameters of the normal distribution.
+- `estimators`: The estimators used to perform the estimations.
+- `deltas`: The values used for joining Voronoi cells, i.e. the cells are joined if the distance between the seeds is less than `delta`.
+- `num_atoms`: The number of mixture components (i.e. the number of molecules).
 
-`deltas` used for Voronoi diagrams, the smaller the value, the smaller the cell size.
-
-`num_atoms` is the number of mixture components.
-
-`best_delta` one of `deltas`, which is used to make individual plots for each estimator from `estimators`, with different `num_atoms` (from left to right).
-
+- `best_delta`: A `delta` value, which will be used for generating individual plots for each estimator from `estimators` (from left to right: `num_atoms`).
 <p align="center">
   <img src="../assets/estimations_d0.025_EMMoment.png" width="75%"/>
 </p>
 
-`split_estim_config` is the configuration used to plot estimations of `estimator` for different `deltas` (from left to right) and fixed `num_atoms`. Red dots are the estimations for denoised data, blue dots are the estimations for the original data.
+- `split_estim_config`: Configuration for plotting estimations of the `estimator` across different `deltas` (from left to right) with the fixed `num_atoms`. Red dots are the estimations for denoised data, blue dots are the estimations for the original data.
 
 <p align="center">
   <img src="../assets/split_estim_n70_EMMoment_d0.025_0.05_0.075_0.1.png" width="75%"/>
 </p>
 
-`zoom_estim_config` is the configuration used to plot estimations in the zoom-in region for different `deltas` (from left to right), `num_atoms` (from top to bottom) and `estimators`.
+- `zoom_estim_config`: Configuration for plotting estimations in the zoom-in region across different `deltas` (from left to right), `num_atoms` (from top to bottom) and `estimators`.
 
 <p align="center">
   <img src="../assets/zoom_estim_Moment_EMMoment_n40_50_60_70_80_d0.025_0.05_0.075_0.1.png" width="75%"/>
