@@ -22,6 +22,9 @@ class EstimationConfig:
         deltas: list[float],
         init_guess: int,
         n_processes: int,
+        t: float | None = None,
+        scale_data_by: float | None = None,
+        use_t_in_mom: bool | None = None,
     ):
         self.estimators = estimators
         self.num_atoms = num_atoms
@@ -30,6 +33,10 @@ class EstimationConfig:
         self.deltas = deltas
         self.init_guess = init_guess
         self.n_processes = n_processes
+
+        self.t = t
+        self.scale_data_by = scale_data_by
+        self.use_t_in_mom = use_t_in_mom
 
     def to_json(self) -> dict:
         res = {
@@ -42,6 +49,13 @@ class EstimationConfig:
         }
         if self.config.inner_scale != 1:
             res["covariance"] = self.config.inner_scale.tolist()
+
+        if self.t is not None:
+            res["t"] = self.t
+        if self.scale_data_by is not None:
+            res["scale_data_by"] = self.scale_data_by
+        if self.use_t_in_mom is not None:
+            res["use_t_in_mom"] = self.use_t_in_mom
 
         return res
 
@@ -104,6 +118,19 @@ def parse_config(spec: dict) -> dict:
     except KeyError:
         covariance = None
 
+    t = spec.get("t", None)
+    if t is not None:
+        t = float(t)
+        if t <= 0:
+            raise ValueError(f"Invalid value for 't': {t}. It must be positive.")
+    scale_data_by = spec.get("scale_data_by", None)
+    if scale_data_by is not None:
+        scale_data_by = float(scale_data_by)
+        if scale_data_by <= 0:
+            raise ValueError(
+                f"Invalid value for 'scale_data_by': {scale_data_by}. It must be positive."
+            )
+
     n_processes = spec.get("n_processes", 1)
     cpu_nodes = os.cpu_count()
     print(f"Using {n_processes} processes out of {cpu_nodes} available")
@@ -114,6 +141,20 @@ def parse_config(spec: dict) -> dict:
 
     config = Config.std() if covariance is None else Config.normal(covariance)
 
+    use_t_in_mom = spec.get("use_t_in_mom", None)
+    if use_t_in_mom is not None:
+        use_t_in_mom = bool(use_t_in_mom)
+        config.use_t_in_mom = use_t_in_mom
+
     return EstimationConfig(
-        estimators, num_atoms, scale, config, deltas, init_guess, n_processes
+        estimators,
+        num_atoms,
+        scale,
+        config,
+        deltas,
+        init_guess,
+        n_processes,
+        t,
+        scale_data_by,
+        use_t_in_mom,
     )

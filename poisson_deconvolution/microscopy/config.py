@@ -115,3 +115,4 @@ class Config:
         self.inner_scale = inner_scale
         self.density_approx = density_approx
         self.empirical_t = True
+        self.use_t_in_mom = False

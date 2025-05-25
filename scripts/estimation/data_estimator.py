@@ -34,7 +34,13 @@ class DataEstimator:
         self.scale = self.estim_config.scale
         self.estimators = self.estim_config.estimators
         self.config = self.estim_config.config
-        self.exp = MicroscopyExperiment.from_data(self.data)
+        if self.estim_config.t:
+            self.exp = MicroscopyExperiment(self.data, self.estim_config.t)
+        else:
+            self.exp = MicroscopyExperiment.from_data(self.data)
+        print(f"Using t={self.exp.t}")
+        print(f"Use t in moment estimation: {self.config.use_t_in_mom}")
+
         self.deltas = self.estim_config.deltas
         PlotConfig(
             [0.4, 0.6],

@@ -43,7 +43,7 @@ def split_estimation(
     split_mass = np.sum(data_split.data)
     split_num_atoms = int(np.round(split_mass / mass * num_atoms))
     split_scale = scale / data_split.split_scale
-    exp = MicroscopyExperiment(data_split.data, split_mass)
+    exp = MicroscopyExperiment(data_split.data, t * split_mass / mass)
     estimations = run_estimations(exp, estimators, split_num_atoms, split_scale, config)
     for est in estimations.data.keys():
         estimations.data[est] = correct_position(estimations.data[est], data_split)

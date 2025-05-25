@@ -94,7 +94,9 @@ class MicroscopyEstimators:
             np.ndarray: The estimated atoms locations.
 
         """
-        estim = self.config.moment(self.experiment, self.num_atoms, self.scale)
+        estim = self.config.moment(
+            self.experiment, self.num_atoms, self.scale, self.config.use_t_in_mom
+        )
         return estim.estimate(self.num_atoms, 0)
 
     def MLEMode(self) -> np.ndarray:
@@ -121,7 +123,12 @@ class MicroscopyEstimators:
         """
         mle = self.config.mle(self.experiment)
         mu_0 = from_moment_estimator(
-            self.experiment, self.num_atoms, self.scale, 0, self.config.moment
+            self.experiment,
+            self.num_atoms,
+            self.scale,
+            0,
+            self.config.moment,
+            self.config.use_t_in_mom,
         )
         return mle.estimate(mu_0, self.scale)
 
@@ -149,7 +156,12 @@ class MicroscopyEstimators:
         """
         em = self.config.em(self.experiment)
         mu_0 = from_moment_estimator(
-            self.experiment, self.num_atoms, self.scale, 0, self.config.moment
+            self.experiment,
+            self.num_atoms,
+            self.scale,
+            0,
+            self.config.moment,
+            self.config.use_t_in_mom,
         )
         return em.estimate(mu_0, self.scale)
 

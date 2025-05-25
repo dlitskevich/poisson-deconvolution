@@ -65,8 +65,14 @@ def read_dataset(dir_path: str, no_config=False):
     data = read_data_file(dir_path)
     data = data[::-1, :].T  # for correct orientation
     print(f"Data shape: {data.shape}")
+    print(f"Raw Data sum: {np.sum(data)}")
 
     config = read_config_file(dir_path) if not no_config else None
+
+    if config and config.scale_data_by is not None:
+        data = data * config.scale_data_by
+        print(f"Data sum after scaling by {config.scale_data_by}: {np.sum(data)}")
+
     kernel = read_kernel(dir_path)
     kernel = None if kernel is None else kernel[::-1, :].T  # for correct orientation
 
@@ -74,6 +80,8 @@ def read_dataset(dir_path: str, no_config=False):
         raise ValueError(
             f"Kernel shape {kernel.shape} does not match data shape {data.shape}"
         )
+    if kernel is not None:
+        print(f"Kernel sum: {np.sum(kernel)}")
 
     print(f"Successfully read dataset from {dir_path}")
 

@@ -58,4 +58,22 @@ Use [`../scripts/params/search.py`](../scripts/params/search.py) script to searc
 python -m scripts.params.search dataset_name
 ```
 
+## Additional parameters
+
+The following additional parameters can be provided in `config.json` (do not specify, if unknown):
+
+```json
+{
+  "t": 1,
+  "scale_data_by": 1,
+  "use_t_in_mom": false
+}
+```
+
+- The `t` parameter is the illumination time. By default the sum of the data matrix entries is used instead.
+- The `scale_data_by` parameter is used to scale the data, i.e. multiply by `scale_data_by` the data matrix. Useful when reading images, since they are normalized to sum up to 1.
+- The `use_t_in_mom` parameter is used to use the `t` parameter in the moment estimator, by default the sum of the data matrix entries is used instead.
+
+## Results
+
 In the [`../results/{dataset_name}/img/search`](../results) folder, the illustrations can be found depicting the initial guesses together with residual noise and Voronoi diagrams for each parameter combination.

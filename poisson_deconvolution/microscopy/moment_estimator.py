@@ -16,7 +16,13 @@ class StdMicroscopyMomentEstimator:
 
     atoms = None
 
-    def __init__(self, experiment: MicroscopyExperiment, max_atoms: int, scale=None):
+    def __init__(
+        self,
+        experiment: MicroscopyExperiment,
+        max_atoms: int,
+        scale=None,
+        use_t_in_mom: bool = False,
+    ):
         """
         Initialize the StdMicroscopyMomentEstimator.
 
@@ -32,6 +38,7 @@ class StdMicroscopyMomentEstimator:
         self.max_atoms = max_atoms
         self.moment_estimator = StdComplexNormMomentApproximator(max_atoms)
         self.atoms_estimator = MeasureMomentApproximator()
+        self._use_t_in_mom = use_t_in_mom
 
     def estimate(self, num_atoms: int, shift=0):
         """
@@ -63,9 +70,11 @@ class StdMicroscopyMomentEstimator:
         np.ndarray: The empirical moments.
         """
         scaled_bins_loc = self.bins_loc + shift
-        # data = self.data / self.t # (worse results)
-        mass = np.sum(self.data)
-        data = self.data / mass if mass > 0 else self.data
+        if self._use_t_in_mom:
+            data = self.data / self.t  # (worse results)
+        else:
+            mass = np.sum(self.data)
+            data = self.data / mass if mass > 0 else self.data
 
         return np.array(
             [np.dot(scaled_bins_loc**k, data) for k in range(max_order + 1)]

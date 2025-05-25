@@ -59,6 +59,7 @@ def from_moment_estimator(
     scale: float,
     shift=0,
     momCls=StdMicroscopyMomentEstimator,
+    use_t_in_mom=False,
 ):
     """
     Initializes points based on the moment estimator.
@@ -73,7 +74,7 @@ def from_moment_estimator(
     Returns:
         numpy.ndarray: The initialized points as a numpy array of shape (num_atoms, 2).
     """
-    estimator = momCls(experiment, num_atoms, scale)
+    estimator = momCls(experiment, num_atoms, scale, use_t_in_mom=use_t_in_mom)
 
     return estimator.estimate(num_atoms, shift)
 

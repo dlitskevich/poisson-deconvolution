@@ -14,7 +14,9 @@ class NormMicroscopyMomentEstimator(StdMicroscopyMomentEstimator):
 
     atoms = None
 
-    def __init__(self, experiment: MicroscopyExperiment, max_atoms: int, scale: float):
+    def __init__(
+        self, experiment: MicroscopyExperiment, max_atoms: int, scale: float, **kwargs
+    ):
         """
         Initialize the NormMicroscopyMomentEstimator.
 
@@ -23,5 +25,5 @@ class NormMicroscopyMomentEstimator(StdMicroscopyMomentEstimator):
         - max_atoms (int): The maximum number of atoms to consider.
         - scale (float): The scale of Gaussian distribution (kernel).
         """
-        super().__init__(experiment, max_atoms)
+        super().__init__(experiment, max_atoms, **kwargs)
         self.moment_estimator = ComplexNormMomentApproximator(max_atoms, scale)
