@@ -107,7 +107,9 @@ class VoronoiSplit:
 
     def split_data(self, data: np.ndarray, id: int) -> DataSplit:
         masked, data_mask = self._masked_data(data, id)
-        pos = np.where(data_mask)
+        # tol = np.quantile(np.unique(masked), 0.05)
+        tol = 0
+        pos = np.where(masked > tol)
         min_pos = np.min(pos, axis=1)
         max_pos = np.max(pos, axis=1)
         split = masked[min_pos[0] : max_pos[0] + 1, min_pos[1] : max_pos[1] + 1]

@@ -123,7 +123,7 @@ class MicroscopyEM(MicroscopyEstimator):
         """
         self.mu_0 = mu_0
         mu_tilde = mu_0
-        tol *= mu_0.size
+        tol *= np.sqrt(mu_0.size)
         for i in range(max_iter):
             mu_new = self.maximization_step(mu_tilde, scale, self.t, jac)
             if np.linalg.norm(mu_tilde - mu_new) < tol:
@@ -276,6 +276,7 @@ class StdMicroscopyEM(MicroscopyEM, StdMicroscopyCommon):
         Returns:
             np.ndarray: The estimated mu (atoms locations) values.
         """
+        tol = 1e-9
         return super().estimate(mu_0, scale, jac, max_iter, tol)
 
     def plot_estimated(self, mu_0: np.ndarray, scale, jac=True, estimated=None):

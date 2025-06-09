@@ -21,7 +21,9 @@ class EstimationConfig:
         config: Config,
         deltas: list[float],
         init_guess: int,
+        init_scale: float,
         n_processes: int,
+        split_num_atoms_factor: int = 1,
         t: float | None = None,
         scale_data_by: float | None = None,
         use_t_in_mom: bool | None = None,
@@ -32,7 +34,10 @@ class EstimationConfig:
         self.config = config
         self.deltas = deltas
         self.init_guess = init_guess
+        self.init_scale = init_scale
         self.n_processes = n_processes
+
+        self.split_num_atoms_factor = split_num_atoms_factor
 
         self.t = t
         self.scale_data_by = scale_data_by
@@ -44,8 +49,10 @@ class EstimationConfig:
             "num_atoms": self.num_atoms,
             "scale": self.scale,
             "init_guess": self.init_guess,
+            "init_scale": self.init_scale,
             "deltas": self.deltas,
             "n_processes": self.n_processes,
+            "split_num_atoms_factor": self.split_num_atoms_factor,
         }
         if self.config.inner_scale != 1:
             res["covariance"] = self.config.inner_scale.tolist()
@@ -109,6 +116,13 @@ def parse_config(spec: dict) -> dict:
     except KeyError:
         raise ValueError("Missing required key in config: 'init_guess'")
     try:
+        init_scale = spec["init_scale"]
+    except KeyError:
+        print(
+            "Missing required key in config: 'init_scale', using 'scale' as 'init_scale'"
+        )
+        init_scale = scale
+    try:
         deltas = spec["deltas"]
     except KeyError:
         raise ValueError("Missing required key in config: 'deltas'")
@@ -117,6 +131,8 @@ def parse_config(spec: dict) -> dict:
         covariance = parse_covariance(spec["covariance"])
     except KeyError:
         covariance = None
+
+    split_num_atoms_factor = spec.get("split_num_atoms_factor", 1)
 
     t = spec.get("t", None)
     if t is not None:
@@ -153,7 +169,9 @@ def parse_config(spec: dict) -> dict:
         config,
         deltas,
         init_guess,
+        init_scale,
         n_processes,
+        split_num_atoms_factor,
         t,
         scale_data_by,
         use_t_in_mom,

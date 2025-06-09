@@ -8,9 +8,9 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from poisson_deconvolution.microscopy.config import Config
 from poisson_deconvolution.microscopy.experiment import MicroscopyExperiment
 from poisson_deconvolution.voronoi import VoronoiSplit
-from scripts.dataset.kernel import get_kernel
+from scripts.dataset.kernel import get_uniform_kernel
 from scripts.dataset.read_dataset import read_dataset
-from scripts.dataset.path_constants import DATASET_DIR, OUTPUT_DIR
+from scripts.dataset.path_constants import DATASET_DIR, get_output_path
 from scripts.estimation.mode import mode_from_data
 from scripts.params.search_config import read_search_file
 
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     dataset = sys.argv[1]
 
     dataset_path = os.path.join(DATASET_DIR, dataset)
-    out_path = os.path.join(OUTPUT_DIR, dataset)
+    out_path = get_output_path(dataset)
     img_out_path = os.path.join(out_path, "img", "search")
     # also creates 'out_path'
     pathlib.Path(img_out_path).mkdir(parents=True, exist_ok=True)
@@ -37,7 +37,7 @@ if __name__ == "__main__":
         scales = [1]
 
     for scale in scales:
-        kernel = get_kernel(data.shape, scale, config)
+        kernel = get_uniform_kernel(data.shape, scale, config)
         frac = data.shape[1] / data.shape[0]
         n_rows = 2 + len(deltas)
         n_cols = len(init_guesses)

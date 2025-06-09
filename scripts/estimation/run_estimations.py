@@ -37,11 +37,15 @@ def split_estimation(
     scale: float,
     t: float,
     config: Config,
+    split_num_atoms_factor: int,
     split_id: int,
 ):
     data_split = split.split_data(sample, split_id)
     split_mass = np.sum(data_split.data)
-    split_num_atoms = int(np.round(split_mass / mass * num_atoms))
+    split_num_atoms = int(
+        np.ceil(np.round(split_mass / mass * num_atoms) / split_num_atoms_factor)
+        * split_num_atoms_factor
+    )
     split_scale = scale / data_split.split_scale
     exp = MicroscopyExperiment(data_split.data, t * split_mass / mass)
     estimations = run_estimations(exp, estimators, split_num_atoms, split_scale, config)
@@ -59,12 +63,23 @@ def run_split_estimations(
     t: float,
     config: Config,
     n_processes: int = 1,
+    split_num_atoms_factor=1,
 ) -> list[EstimationResults]:
     mass = np.sum(sample)
     partial_estimation = partial(
-        split_estimation, mass, sample, split, estimators, num_atoms, scale, t, config
+        split_estimation,
+        mass,
+        sample,
+        split,
+        estimators,
+        num_atoms,
+        scale,
+        t,
+        config,
+        split_num_atoms_factor,
     )
     n_components = split.n_components
+
     with Pool(processes=n_processes) as pool:
         results = list(
             tqdm(

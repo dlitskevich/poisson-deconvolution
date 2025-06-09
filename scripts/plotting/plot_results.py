@@ -10,12 +10,12 @@ from scripts.plotting.plot_config import PlotConfig
 from scripts.plotting.types import COLORS, PREFIX
 from scripts.plotting.utils import plot_box
 from scripts.dataset.read_dataset import read_dataset
-from scripts.dataset.path_constants import DATASET_DIR, OUTPUT_DIR
+from scripts.dataset.path_constants import DATASET_DIR, get_output_path
 
 
 class PlotResults:
     def __init__(self, dataset: str):
-        self.out_path = os.path.join(OUTPUT_DIR, dataset)
+        self.out_path = get_output_path(dataset)
         self.img_out_path = os.path.join(self.out_path, "img-zoom")
         # also creates 'out_path'
         pathlib.Path(self.img_out_path).mkdir(parents=True, exist_ok=True)

@@ -5,7 +5,7 @@ import pathlib
 from matplotlib import pyplot as plt
 import numpy as np
 
-from scripts.dataset.kernel import get_kernel
+from scripts.dataset.kernel import get_uniform_kernel
 from scripts.estimation import (
     run_split_estimations,
     SplitEstimationsResults,
@@ -16,13 +16,13 @@ from poisson_deconvolution.voronoi import VoronoiSplit
 from scripts.plotting.plot_config import PlotConfig
 from scripts.plotting.plot import plot_all_data, plot_estimated
 from scripts.dataset.read_dataset import save_dataset, read_dataset
-from scripts.dataset.path_constants import DATASET_DIR, OUTPUT_DIR
+from scripts.dataset.path_constants import DATASET_DIR, get_output_path
 
 
 class DataEstimator:
     def __init__(self, dataset: str):
         dataset_path = os.path.join(DATASET_DIR, dataset)
-        self.out_path = os.path.join(OUTPUT_DIR, dataset)
+        self.out_path = get_output_path(dataset)
         self.img_out_path = os.path.join(self.out_path, "img")
         # also creates 'out_path'
         pathlib.Path(self.img_out_path).mkdir(parents=True, exist_ok=True)
@@ -40,11 +40,14 @@ class DataEstimator:
             self.exp = MicroscopyExperiment.from_data(self.data)
         print(f"Using t={self.exp.t}")
         print(f"Use t in moment estimation: {self.config.use_t_in_mom}")
+        print(
+            f"Using split_num_atoms_factor={self.estim_config.split_num_atoms_factor}"
+        )
 
         self.deltas = self.estim_config.deltas
         PlotConfig(
-            [0.4, 0.6],
-            [0.4, 0.6],
+            [0.17, 0.37],
+            [0.61, 0.81],
             self.estimators,
             self.deltas[0],
             self.deltas,
@@ -52,10 +55,13 @@ class DataEstimator:
         ).dump(self.out_path)
 
         if self.kernel is None:
-            print(
-                f"No kernel found in {dataset_path}\nUsing std kernel with scale={self.scale}"
+            init_guess_scale = self.estim_config.init_scale
+            print(f"Using uniform kernel with scale={init_guess_scale}")
+            self.kernel = get_uniform_kernel(
+                self.data.shape, init_guess_scale, self.config
             )
-            self.kernel = get_kernel(self.data.shape, self.scale, self.config)
+        else:
+            print(f"Using kernel from {dataset_path} with shape {self.kernel.shape}")
 
         save_dataset(self.data, self.estim_config, self.kernel, self.out_path)
         print(f"Successfully saved dataset to {self.out_path}")
@@ -64,7 +70,7 @@ class DataEstimator:
         self.init_guess, data_denoised = mode_from_data(
             self.exp, init_guess_num, self.kernel
         )
-        print(f"Successfully made init guess")
+        print(f"Successfully made init guess with {init_guess_num} points")
         self.exp_denoised = MicroscopyExperiment.from_data(data_denoised)
 
         self.plot_all_data()
@@ -83,6 +89,7 @@ class DataEstimator:
         data_denoised = self.exp_denoised.data
         t_denoised = self.exp_denoised.t
         deltas = self.deltas
+        split_factor = self.estim_config.split_num_atoms_factor
 
         for delta in deltas:
             print(f"Starting data estimation... {scale} scale {delta} delta")
@@ -94,7 +101,15 @@ class DataEstimator:
                 print(f"{num_atoms} number of components")
                 print(f"Estimating with original data")
                 estimation_res = run_split_estimations(
-                    data, split, estimators, num_atoms, scale, t, config, n_processes
+                    data,
+                    split,
+                    estimators,
+                    num_atoms,
+                    scale,
+                    t,
+                    config,
+                    n_processes,
+                    split_num_atoms_factor=split_factor,
                 )
                 print(f"Estimating with denoised data")
                 denoised_estimation_res = run_split_estimations(
@@ -106,6 +121,7 @@ class DataEstimator:
                     t_denoised,
                     config,
                     n_processes,
+                    split_num_atoms_factor=split_factor,
                 )
 
                 results.add_result(num_atoms, estimation_res)

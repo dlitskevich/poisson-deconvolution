@@ -16,10 +16,10 @@ def mode_from_data(
     Returns:
         tuple[np.ndarray, np.ndarray]: The best locations and the denoised data.
     """
-    data = experiment.data / experiment.data.sum()
+    data = experiment.data
     n_x, n_y = experiment.data.shape
     best_loc = -np.ones((num_atoms, 2))
-    diff = data.copy()
+    diff = data.copy().astype(float)
 
     for i in range(num_atoms):
         max_id = np.argmax(diff)
@@ -41,4 +41,4 @@ def mode_from_data(
         )
     diff = np.ma.array(diff, mask=diff < 0).filled(0)
 
-    return best_loc, (data - diff) * experiment.t
+    return best_loc, (data - diff)
