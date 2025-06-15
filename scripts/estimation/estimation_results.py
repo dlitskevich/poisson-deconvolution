@@ -113,3 +113,4 @@ class SplitEstimationsResults:
 
             with open(os.path.join(path, filename), "w") as file:
                 json.dump(res, file)
+        return res

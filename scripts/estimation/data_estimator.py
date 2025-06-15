@@ -20,9 +20,13 @@ from scripts.dataset.path_constants import DATASET_DIR, get_output_path
 
 
 class DataEstimator:
-    def __init__(self, dataset: str):
-        dataset_path = os.path.join(DATASET_DIR, dataset)
-        self.out_path = get_output_path(dataset)
+    def __init__(self, dataset: str, dataset_path: str = None, out_path: str = None):
+        if dataset_path is None:
+            dataset_path = os.path.join(DATASET_DIR, dataset)
+        if out_path is None:
+            self.out_path = get_output_path(dataset)
+        else:
+            self.out_path = out_path
         self.img_out_path = os.path.join(self.out_path, "img")
         # also creates 'out_path'
         pathlib.Path(self.img_out_path).mkdir(parents=True, exist_ok=True)
