@@ -1,4 +1,4 @@
-# [Minimax Rates for Discrete Signal Recovery with Applications to Photonic Imaging](#)
+# [Local Poisson Deconvolution for Discrete Signals](#)
 
 TODO: upd link
 
@@ -57,7 +57,7 @@ python -m scripts.plot dataset_name
 
 The estimations with plots will be saved in the `results/{dataset_name}` folder. Refer to the [`results/readme`](results/readme.md) for more details.
 
-![estimations](assets/estimations_zoom_example.png)
+![estimations](assets/dna_origami_img/estimations_zoom_example.png)
 
 ### Simulations
 
@@ -93,8 +93,8 @@ The experimental STED microscopy data is considered from [here](https://doi.org/
 If you found our work useful, please consider citing us:
 
 ```bibtex
-@article{hundrieser2025minimax,
-  title   = {Minimax Rates for Discrete Signal Recovery with Applications to Photonic Imaging},
+@article{hundrieser2025local,
+  title   = {Local Poisson Deconvolution for Discrete Signals},
   author  = {{Shayan Hundrieser, Tudor Manole, Danila Litskevich, and Axel Munk}},
   year    = {2025},
   journal = {In preparation}

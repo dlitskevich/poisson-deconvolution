@@ -18,9 +18,9 @@ During the estimation procedure, the `plot-config.json` file is created in the f
 {
   "x_lim": [0.17, 0.37],
   "y_lim": [0.61, 0.81],
-  "best_delta": 0.025,
-  "estimators": ["Moment", "EM (moment)"],
-  "deltas": [0.025, 0.05, 0.075, 0.1],
+  "best_delta": 0.045,
+  "estimators": ["EM (moment)", "Moment", "EM (mode)", "Mode"],
+  "deltas": [0.03, 0.045, 0.06, 0.075],
   "num_atoms": [40, 50, 60, 70, 80],
   "split_estim_config": {
     "num_atoms": 70,
@@ -50,17 +50,17 @@ Only specified parameters are used for plotting.
 
 - `best_delta`: A `delta` value, which will be used for generating individual plots for each estimator from `estimators` (from left to right: `num_atoms`).
 <p align="center">
-  <img src="../assets/estimations_d0.025_EMMoment.png" width="75%"/>
+  <img src="../assets/dna_origami_img/best_cluster2_estims_d45n_40_50_60_70_EMMoment.png" width="75%"/>
 </p>
 
 - `split_estim_config`: Configuration for plotting estimations of the `estimator` across different `deltas` (from left to right) with the fixed `num_atoms`. Red dots are the estimations for denoised data, blue dots are the estimations for the original data.
 
 <p align="center">
-  <img src="../assets/split_estim_n70_EMMoment_d0.025_0.05_0.075_0.1.png" width="75%"/>
+  <img src="../assets/dna_origami_img/cluster0_estims70d_30_45_60_75_EMMoment.png" width="75%"/>
 </p>
 
 - `zoom_estim_config`: Configuration for plotting estimations in the zoom-in region across different `deltas` (from left to right), `num_atoms` (from top to bottom) and `estimators`.
 
 <p align="center">
-  <img src="../assets/zoom_estim_Moment_EMMoment_n40_50_60_70_80_d0.025_0.05_0.075_0.1.png" width="75%"/>
+  <img src="../assets/dna_origami_img/cluster0_estims_zoomed_deltas_40_50_60_70_80.png" width="75%"/>
 </p>
