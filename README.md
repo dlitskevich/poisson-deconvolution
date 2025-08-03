@@ -1,7 +1,5 @@
 # [Local Poisson Deconvolution for Discrete Signals](#)
 
-TODO: upd link
-
 **Authors**: Shayan Hundrieser, Tudor Manole, Danila Litskevich, Axel Munk
 
 <p align='center'><img src='assets/overview.png' alt='Overview.' width='100%'> </p>
@@ -97,7 +95,7 @@ If you found our work useful, please consider citing us:
   title   = {Local Poisson Deconvolution for Discrete Signals},
   author  = {{Shayan Hundrieser, Tudor Manole, Danila Litskevich, and Axel Munk}},
   year    = {2025},
-  journal = {In preparation}
+  journal = {arXiv preprint}
 }
 ```
 
