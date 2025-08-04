@@ -1,12 +1,33 @@
-# [Local Poisson Deconvolution for Discrete Signals](#)
+# [Local Poisson Deconvolution for Discrete Signals](https://arxiv.org/abs/2508.00824)
 
 **Authors**: Shayan Hundrieser, Tudor Manole, Danila Litskevich, Axel Munk
 
 <p align='center'><img src='assets/overview.png' alt='Overview.' width='100%'> </p>
 
-We analyze the statistical problem of recovering a discrete signal, modeled as a $k$-atomic uniform distribution $\mu$, from a binned Poisson convolution model. This question is motivated by super-resolution microscopy where precise estimation of $\mu$ provides insights into spatial configurations, such as protein colocalization in cellular imaging. Our main result quantifies the minimax risk of estimating $\mu$ under the Wasserstein distance for Gaussian and compactly supported, smooth convolution kernels. Specifically, we show that the global minimax risk scales with $t^{-1/2k}$ for $t \to \infty$, where $t$ denotes the illumination time of the probe, and that this rate is achieved by the method of moments and the maximum likelihood estimator.
+ We analyze the statistical problem of recovering an atomic signal, modeled as
+a discrete uniform distribution $\mu$, from a binned Poisson convolution model.
+This question is motivated, among others, by super-resolution laser microscopy
+applications, where precise estimation of $\mu$ provides insights into spatial
+formations of cellular protein assemblies. Our main results quantify the local
+minimax risk of estimating $\mu$ for a broad class of smooth convolution
+kernels. This local perspective enables us to sharply quantify optimal
+estimation rates as a function of the clustering structure of the underlying
+signal. Moreover, our results are expressed under a multiscale loss function,
+which reveals that different parts of the underlying signal can be recovered at
+different rates depending on their local geometry. Overall, these results paint
+an optimistic perspective on the Poisson deconvolution problem, showing that
+accurate recovery is achievable under a much broader class of signals than
+suggested by existing global minimax analyses. Beyond Poisson deconvolution,
+our results also allow us to establish the local minimax rate of parameter
+estimation in Gaussian mixture models with uniform weights.
 
-This repository contains the implementation of the methods and evaluation scripts to reproduce the results of the estimations for experimental STED microscopy data to locate single DNA origami. In addition, we provide numerical experiments on simulated data that showcase the practical performance of the estimators.
+  We apply our methods to experimental super-resolution microscopy data to
+identify the location and configuration of individual DNA origamis. In
+addition, we complement our findings with numerical experiments on runtime and
+statistical recovery that showcase the practical performance of our estimators
+and their trade-offs.
+
+This repository contains the implementation of the methods and evaluation scripts to reproduce the results.
 
 ## Installation
 
